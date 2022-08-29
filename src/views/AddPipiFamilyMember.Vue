@@ -3,11 +3,11 @@
   import { useRouter } from 'vue-router';
   import { useCurrentPath } from '../store/store.js'
   import { vFocus } from '../directives/autoFocus.js';
-  // import { useRefHistory } from '@vueuse/core'
   import { addDoc, collection } from "firebase/firestore";
   import { db } from '../firebase'
 
   const usePath = useCurrentPath()
+  usePath.setCurrentPath('/AddPipiFamilyMember')
 
   const addMemberInfo = ref({
     name: "",
@@ -28,7 +28,6 @@
 
   const addMember = async () => {
     await addDoc(collection(db, "members"), addMemberInfo.value)
-    // undo()
     addMemberInfo.name = ""
     addMemberInfo.age = 0
     addMemberInfo.gender = 0
@@ -58,9 +57,10 @@
         <div class="control">
           <input
             class="input is-large"
-            type="text"
+            type="number"
             placeholder="Input Age"
             v-model.number="addMemberInfo.age"
+            @onkeydown="value=value.replace(/[^\d]/g,'')"
           >
         </div>
       </div>

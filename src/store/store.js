@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-import { collection, onSnapshot } from "firebase/firestore";
+import { useRoute } from 'vue-router'
+
+import { collection, getDocs } from "firebase/firestore";
 import { db } from '../firebase'
+
+import { cloneDeep } from 'lodash'
 
 // export const useStore = defineStore('piFamilyMember', {
 //     state: () => ({
@@ -27,9 +31,12 @@ import { db } from '../firebase'
 // })
 
 export const useCurrentPath = defineStore('currentPath', () => {
-    const currentPath = ref('/')
 
-    const setCurrentPath = (passPathValue) => {
+    const route = useRoute()
+
+    const currentPath = ref(route.path)
+
+    const setCurrentPath = passPathValue => {
         currentPath.value = passPathValue
     }
 
@@ -37,22 +44,20 @@ export const useCurrentPath = defineStore('currentPath', () => {
 })
 
 export const useStore = defineStore('memberInfo', () => {
-    const piFamilyMember = ref([])
-    const setMember = () => {
-        onSnapshot(collection(db, "members"), querySnapshot => {
-            const collectMember = []
-            querySnapshot.forEach(doc => {
-                // // doc.data() is never undefined for query doc snapshots
-                // console.log(doc.id, " => ", doc.data())
-                const toNewObj = {
-                    id: doc.id,
-                    ...doc.data(),
-                    isEditting: false
-                }
-                collectMember.push(toNewObj)
+    const changeMember = ref([])
+    const originMember = ref([])
+    const setMember = async () => {
+        const members = []
+        const querySnapShot = await getDocs(collection(db, "members"))
+        querySnapShot.forEach(doc => {
+            members.push({
+                id: doc.id,
+                ...doc.data(),
+                isEditting: false
             })
-            piFamilyMember.value = [...collectMember]
         })
+        changeMember.value = [...members]
+        originMember.value = cloneDeep(members)
     }
-    return { piFamilyMember, setMember }
+    return { changeMember, originMember, setMember }
 })

@@ -16,8 +16,8 @@ const { currentPath } = storeToRefs(usePath)
           <span>SHOW MEMBER</span>
         </RouterLink>
       </li>
-      <li :class="[currentPath === 'AddPipiFamilyMember' ? 'is-active' : '']">
-        <RouterLink to="/AddPipiFamilyMember" @click="usePath.setCurrentPath('AddPipiFamilyMember')">
+      <li :class="[currentPath === '/AddPipiFamilyMember' ? 'is-active' : '']">
+        <RouterLink to="/AddPipiFamilyMember" @click="usePath.setCurrentPath('/AddPipiFamilyMember')">
           <span>Add MEMBER</span>
         </RouterLink>
       </li>

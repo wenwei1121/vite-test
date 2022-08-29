@@ -2,6 +2,10 @@
 import DisplayMember from '../components/DisplayMember.vue';
 import SearchInput from '../components/searchInput.vue';
 import { ref } from 'vue';
+import { useCurrentPath } from '../store/store.js';
+
+const usePath = useCurrentPath()
+usePath.setCurrentPath('/')
 
 const passSearchName = ref('')
 

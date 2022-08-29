@@ -1,8 +1,6 @@
-import { ref } from 'vue'
 import Swal from 'sweetalert2'
 
 export const comfirmSwal = async (title, icon) => {
-    // const comfirmResult = ref(false)
 
     const res = await Swal.fire({
         title: title,
@@ -13,6 +11,16 @@ export const comfirmSwal = async (title, icon) => {
         confirmButtonText: 'Yes'
     })
 
-    // comfirmResult.value = res.isConfirmed
     return res.isConfirmed
+}
+
+export const resultSwal = (msg, icon) => {
+
+    Swal.fire({
+        title: msg,
+        icon: icon,
+        showConfirmButton: false,
+        timer: 1500
+    })
+
 }
