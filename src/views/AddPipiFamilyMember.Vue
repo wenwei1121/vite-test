@@ -1,8 +1,13 @@
 <script setup>
   import { ref } from 'vue';
+  // vueRouter
   import { useRouter } from 'vue-router';
+  // vuex
   import { useCurrentPath } from '../store/store.js'
+  // directives
   import { vFocus } from '../directives/autoFocus.js';
+  import { vNumOnly } from "../directives/numOnly";
+  // firebase
   import { addDoc, collection } from "firebase/firestore";
   import { db } from '../firebase'
 
@@ -59,8 +64,8 @@
             class="input is-large"
             type="number"
             placeholder="Input Age"
+            v-num-only
             v-model.number="addMemberInfo.age"
-            @onkeydown="value=value.replace(/[^\d]/g,'')"
           >
         </div>
       </div>

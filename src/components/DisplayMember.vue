@@ -5,6 +5,7 @@
   import { db } from '../firebase/index.js'
   import { deleteDoc, doc, setDoc } from '@firebase/firestore'
   import { comfirmSwal, resultSwal } from '../composables/useAlert'
+  import { vNumOnly } from "../directives/numOnly";
 
   // 要賦值給 props 才會讀的到?
   const props = defineProps({
@@ -95,8 +96,8 @@
                 <input
                   class="input is-medium"
                   type="number"
+                  v-num-only
                   v-model.number="member.age"
-                  @onkeydown="value=value.replace(/[^\d]/g,'')"
                 >
               </p>
             </div>
