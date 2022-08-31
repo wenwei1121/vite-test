@@ -1,14 +1,16 @@
 <script setup>
-  import { ref } from 'vue';
+  import { ref } from 'vue'
   // vueRouter
-  import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router'
   // vuex
   import { useCurrentPath } from '../store/store.js'
+  // useAlert
+  import { resultSwal } from '../composables/useAlert'
   // directives
-  import { vFocus } from '../directives/autoFocus.js';
-  import { vNumOnly } from "../directives/numOnly";
+  import { vFocus } from '../directives/autoFocus.js'
+  import { vNumOnly } from "../directives/numOnly"
   // firebase
-  import { addDoc, collection } from "firebase/firestore";
+  import { addDoc, collection } from "firebase/firestore"
   import { db } from '../firebase'
 
   const usePath = useCurrentPath()
@@ -32,12 +34,24 @@
   const router = useRouter()
 
   const addMember = async () => {
-    await addDoc(collection(db, "members"), addMemberInfo.value)
-    addMemberInfo.name = ""
-    addMemberInfo.age = 0
-    addMemberInfo.gender = 0
-    usePath.setCurrentPath('/')
-    router.push({ path: "/" })
+    if (addMemberInfo.value.name === "") {
+      resultSwal("Have empty name", "error")
+      return
+    }
+
+    if (addMemberInfo.value.age === "") {
+      resultSwal("Have empty age", "error")
+      return
+    }
+
+    try {
+      await addDoc(collection(db, "members"), addMemberInfo.value)
+      resultSwal("Add new member success", "success")
+      usePath.setCurrentPath('/')
+      router.push({ path: "/" })
+    } catch (err) {
+      resultSwal("Add new member failed", "error")
+    }
   }
 </script>
 

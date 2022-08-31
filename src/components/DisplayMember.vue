@@ -30,6 +30,16 @@
   const updateMember = async (member) => {
     const { id, name, age, gender } = member
 
+    if (name === "") {
+      resultSwal("Have empty name", "error")
+      return
+    }
+
+    if (age === "") {
+      resultSwal("Have empty age", "error")
+      return
+    }
+
     try {
       await setDoc(doc(db, "members", id), {
         name,
@@ -85,7 +95,7 @@
             <div class="is-size-5" v-show="!member.isEditting">{{ member.name }}</div>
             <div class="columns field is-grouped" v-show="member.isEditting">
               <p class="column control">
-                <input class="input is-medium" type="text" placeholder="Search Name" v-model="member.name">
+                <input class="input is-medium" type="text" placeholder="Search Name" v-model.trim="member.name">
               </p>
             </div>
           </th>
