@@ -1,11 +1,12 @@
-import { defineStore } from 'pinia'
 import { ref } from 'vue';
-
+// router
 import { useRoute } from 'vue-router'
-
-import { collection, getDocs } from "firebase/firestore";
-import { db } from '../firebase'
-
+// pinia
+import { defineStore } from 'pinia'
+// composables
+import { resultSwal } from '../composables/useAlert'
+import { getApiResult } from '../composables/useApiResult'
+// lodash
 import { cloneDeep } from 'lodash'
 
 export const useCurrentPath = defineStore('currentPath', () => {
@@ -25,17 +26,13 @@ export const useStore = defineStore('memberInfo', () => {
     const changeMember = ref([])
     const originMember = ref([])
     const setMember = async () => {
-        const members = []
-        const querySnapShot = await getDocs(collection(db, "members"))
-        querySnapShot.forEach(doc => {
-            members.push({
-                id: doc.id,
-                ...doc.data(),
-                isEditting: false
-            })
-        })
-        changeMember.value = [...members]
-        originMember.value = cloneDeep(members)
+        try {
+            const data = await getApiResult("/member", "readPiPiMembers")
+            changeMember.value = [...data]
+            originMember.value = cloneDeep(data)
+        } catch (err) {
+            resultSwal("Reading members failed", "error")
+        }
     }
     return { changeMember, originMember, setMember }
 })

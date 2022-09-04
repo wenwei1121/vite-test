@@ -2,16 +2,14 @@
   import { ref } from 'vue'
   // vueRouter
   import { useRouter } from 'vue-router'
-  // vuex
+  // pinia
   import { useCurrentPath, useLoadingState } from '../store/store.js'
   import { storeToRefs } from 'pinia'
-  // useAlert
+  // composables
   import { resultSwal } from '../composables/useAlert'
+  import { getApiResult } from '../composables/useApiResult'
   // directives
   import { vFocus, vNumOnly } from '../directives/useDealInput'
-  // firebase
-  import { addDoc, collection } from "firebase/firestore"
-  import { db } from '../firebase'
 
   const usePath = useCurrentPath()
   usePath.setCurrentPath('/AddPipiFamilyMember')
@@ -49,9 +47,9 @@
 
     try {
       useLoading.changeLoadingState(1)
-      await addDoc(collection(db, "members"), addMemberInfo.value)
+      const data = await getApiResult("/member", "addPiPiMembers", addMemberInfo.value)
       useLoading.changeLoadingState(0)
-      resultSwal("Add new member success", "success")
+      resultSwal(data.message, "success")
       usePath.setCurrentPath('/')
       router.push({ path: "/" })
     } catch (err) {

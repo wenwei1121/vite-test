@@ -1,23 +1,24 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { vFocus } from '../directives/useDealInput';
+  import { ref, watch } from 'vue'
+  // directives
+  import { vFocus } from '../directives/useDealInput';
 
-const emit = defineEmits(['changeInputName'])
+  const emit = defineEmits(['changeInputName'])
 
-const inputName = ref('')
+  const inputName = ref('')
 
-watch(inputName, (newVal) => {
-  emit('changeInputName', newVal)
-})
+  watch(inputName, (newVal) => {
+    emit('changeInputName', newVal)
+  })
 
-// const inputNameTwo = reactive({
-//   name: '',
-// })
+  // const inputNameTwo = reactive({
+  //   name: '',
+  // })
 
-// // 監聽 reactive 裡面的資料 需要用callback Fn
-// watch(() => inputNameTwo.name, newVal => {
-//   emit('changeInputName', newVal)
-// })
+  // // 監聽 reactive 裡面的資料 需要用callback Fn
+  // watch(() => inputNameTwo.name, newVal => {
+  //   emit('changeInputName', newVal)
+  // })
 
 </script>
 

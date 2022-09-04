@@ -1,17 +1,19 @@
 <script setup>
-import DisplayMember from '../components/DisplayMember.vue';
-import SearchInput from '../components/searchInput.vue';
-import { ref } from 'vue';
-import { useCurrentPath } from '../store/store.js';
+  import { ref } from 'vue';
+  // components
+  import DisplayMember from '../components/DisplayMember.vue';
+  import SearchInput from '../components/searchInput.vue';
+  // pinia
+  import { useCurrentPath } from '../store/store.js';
 
-const usePath = useCurrentPath()
-usePath.setCurrentPath('/')
+  const usePath = useCurrentPath()
+  usePath.setCurrentPath('/')
 
-const passSearchName = ref('')
+  const passSearchName = ref('')
 
-function changeMemberList(newInputName) {
-  passSearchName.value = newInputName
-}
+  function changeMemberList(newInputName) {
+    passSearchName.value = newInputName
+  }
 </script>
 
 <template>

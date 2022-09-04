@@ -1,10 +1,12 @@
 <script setup>
-import { storeToRefs } from 'pinia';
-import { RouterLink, RouterView } from 'vue-router'
-import { useCurrentPath } from './store/store.js';
+  // router
+  import { RouterLink, RouterView } from 'vue-router'
+  // pinia
+  import { storeToRefs } from 'pinia';
+  import { useCurrentPath } from './store/store.js';
 
-const usePath = useCurrentPath()
-const { currentPath } = storeToRefs(usePath)
+  const usePath = useCurrentPath()
+  const { currentPath } = storeToRefs(usePath)
 
 </script>
 

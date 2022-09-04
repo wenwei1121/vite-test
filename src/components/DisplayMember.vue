@@ -1,11 +1,16 @@
 <script setup>
   import { computed } from 'vue'
+  // pinia
   import { storeToRefs } from 'pinia' 
   import { useStore, useLoadingState } from '../store/store.js'
+  // composables
+  import { comfirmSwal, resultSwal } from '../composables/useAlert'
+  // directives
+  import { vNumOnly } from "../directives/useDealInput";
+  // firebase
   import { db } from '../firebase/index.js'
   import { deleteDoc, doc, setDoc } from '@firebase/firestore'
-  import { comfirmSwal, resultSwal } from '../composables/useAlert'
-  import { vNumOnly } from "../directives/useDealInput";
+import { getApiResult } from '../composables/useApiResult';
 
   // 要賦值給 props 才會讀的到?
   const props = defineProps({
@@ -15,9 +20,9 @@
     },
   })
 
-  const store = useStore()
-  store.setMember()
-  const { changeMember, originMember } = storeToRefs(store)
+  const { setMember } = useStore()
+  setMember()
+  const { changeMember, originMember } = storeToRefs(useStore())
 
   const useLoading = useLoadingState()
   const { loadingState } = storeToRefs(useLoading)
@@ -52,13 +57,14 @@
     try {
       useLoading.changeLoadingState(1)
 
-      await setDoc(doc(db, "members", id), {
-        name,
-        age,
-        gender
-      })
+      const data = await getApiResult('/member', "updatePiPiMembers", { id, name, age, gender })
+      // await setDoc(doc(db, "members", id), {
+      //   name,
+      //   age,
+      //   gender
+      // })
 
-      await store.setMember()
+      await setMember()
 
       useLoading.changeLoadingState(0)
       resultSwal("update success", "success")
@@ -77,12 +83,13 @@
   }
 
   const deleteMember = async (id) => {
-    const cofirmResult = await comfirmSwal("sure to delete?", "warning")
-    if (cofirmResult) {
+    const confirmResult = await comfirmSwal("sure to delete?", "warning")
+    if (confirmResult) {
       try {
         useLoading.changeLoadingState(1)
 
-        await deleteDoc(doc(db, "members", id))
+        const data = await getApiResult('/member', "deletePiPiMembers", { id })
+        // await deleteDoc(doc(db, "members", id))
 
         changeMember.value = changeMember.value.filter(member => member.id !== id)
 
