@@ -1,11 +1,11 @@
 <script setup>
   import { computed } from 'vue'
   import { storeToRefs } from 'pinia' 
-  import { useStore } from '../store/store.js'
+  import { useStore, useLoadingState } from '../store/store.js'
   import { db } from '../firebase/index.js'
   import { deleteDoc, doc, setDoc } from '@firebase/firestore'
   import { comfirmSwal, resultSwal } from '../composables/useAlert'
-  import { vNumOnly } from "../directives/numOnly";
+  import { vNumOnly } from "../directives/useDealInput";
 
   // 要賦值給 props 才會讀的到?
   const props = defineProps({
@@ -16,16 +16,25 @@
   })
 
   const store = useStore()
-
   store.setMember()
-  
   const { changeMember, originMember } = storeToRefs(store)
+
+  const useLoading = useLoadingState()
+  const { loadingState } = storeToRefs(useLoading)
   
   const filterFamilyMember = computed(() => {
     return changeMember.value.filter(member => {
       return member.name.toUpperCase().indexOf(props.passSearchName.toUpperCase()) >= 0
     })
   })
+
+  const editMember = (member) => {
+    // 傳物件進來 還是 proxy 物件的資料 但如果傳進來是 物件裡的屬性 只會有值 就會失去反應性
+    changeMember.value.forEach(member => {
+      member.isEditting = false
+    })
+    member.isEditting = true
+  }
 
   const updateMember = async (member) => {
     const { id, name, age, gender } = member
@@ -41,6 +50,8 @@
     }
 
     try {
+      useLoading.changeLoadingState(1)
+
       await setDoc(doc(db, "members", id), {
         name,
         age,
@@ -48,6 +59,8 @@
       })
 
       await store.setMember()
+
+      useLoading.changeLoadingState(0)
       resultSwal("update success", "success")
     } catch (err) {
       resultSwal("update fail", "error")
@@ -67,8 +80,13 @@
     const cofirmResult = await comfirmSwal("sure to delete?", "warning")
     if (cofirmResult) {
       try {
+        useLoading.changeLoadingState(1)
+
         await deleteDoc(doc(db, "members", id))
+
         changeMember.value = changeMember.value.filter(member => member.id !== id)
+
+        useLoading.changeLoadingState(0)
         resultSwal("delete success", "success")
       } catch (error) {
         resultSwal("delete success", "error")
@@ -137,12 +155,26 @@
           </td>
           <td>
             <div class="buttons" v-show="!member.isEditting">
-              <button class="button is-info is-outlined is-clickable" @click="member.isEditting = true">Edit</button>
+              <button class="button is-info is-outlined is-clickable" @click="editMember(member)">Edit</button>
             </div>
             <div class="buttons" v-show="member.isEditting">
-              <button class="button is-info is-outlined is-clickable" @click="updateMember(member)">Save</button>
-              <button class="button is-outlined is-clickable" @click="cancelEdit(member)">Cancel</button>
-              <button class="button is-danger is-outlined is-clickable" @click="deleteMember(member.id)">Delete</button>
+              <button
+                class="button is-info is-outlined is-clickable"
+                :class="[loadingState ? 'is-loading' : '']"
+                @click="updateMember(member)"
+              >Save
+              </button>
+              <button 
+                class="button is-outlined is-clickable"
+                @click="cancelEdit(member)"
+              >Cancel
+              </button>
+              <button
+                class="button is-danger is-outlined is-clickable"
+                :class="[loadingState ? 'is-loading' : '']"
+                @click="deleteMember(member.id)"
+              >Delete
+              </button>
             </div>
           </td>
         </tr>

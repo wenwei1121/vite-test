@@ -3,18 +3,21 @@
   // vueRouter
   import { useRouter } from 'vue-router'
   // vuex
-  import { useCurrentPath } from '../store/store.js'
+  import { useCurrentPath, useLoadingState } from '../store/store.js'
+  import { storeToRefs } from 'pinia'
   // useAlert
   import { resultSwal } from '../composables/useAlert'
   // directives
-  import { vFocus } from '../directives/autoFocus.js'
-  import { vNumOnly } from "../directives/numOnly"
+  import { vFocus, vNumOnly } from '../directives/useDealInput'
   // firebase
   import { addDoc, collection } from "firebase/firestore"
   import { db } from '../firebase'
 
   const usePath = useCurrentPath()
   usePath.setCurrentPath('/AddPipiFamilyMember')
+
+  const useLoading = useLoadingState()
+  const { loadingState } = storeToRefs(useLoading)
 
   const addMemberInfo = ref({
     name: "",
@@ -45,7 +48,9 @@
     }
 
     try {
+      useLoading.changeLoadingState(1)
       await addDoc(collection(db, "members"), addMemberInfo.value)
+      useLoading.changeLoadingState(0)
       resultSwal("Add new member success", "success")
       usePath.setCurrentPath('/')
       router.push({ path: "/" })
@@ -107,7 +112,12 @@
 
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-link is-clickable is-size-5" @click="addMember">Add</button>
+          <button
+            class="button is-link is-clickable is-size-5"
+            :class="[loadingState ? 'is-loading': '']"
+            @click="addMember"
+          >Add
+          </button>
         </div>
       </div>
     </div>

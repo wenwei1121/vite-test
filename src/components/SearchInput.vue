@@ -1,5 +1,6 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { vFocus } from '../directives/useDealInput';
 
 const emit = defineEmits(['changeInputName'])
 
@@ -8,13 +9,6 @@ const inputName = ref('')
 watch(inputName, (newVal) => {
   emit('changeInputName', newVal)
 })
-
-// 帶 v 就可以做自訂義指令 在 script => camelCase(vAutoFocus) 在 template => kebab casev-auto-focus)
-const vAutoFocus = {
-  mounted: el => {
-    el.focus()
-  }
-}
 
 // const inputNameTwo = reactive({
 //   name: '',
@@ -30,7 +24,7 @@ const vAutoFocus = {
 <template>
   <div class="columns field is-grouped">
     <p class="column is-half is-offset-one-quarter control">
-      <input v-auto-focus v-model="inputName" class="input is-large" type="text" placeholder="Search Name">
+      <input v-focus v-model="inputName" class="input is-large" type="text" placeholder="Search Name">
     </p>
   </div>
   <!-- <div class="field">

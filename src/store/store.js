@@ -8,28 +8,6 @@ import { db } from '../firebase'
 
 import { cloneDeep } from 'lodash'
 
-// export const useStore = defineStore('piFamilyMember', {
-//     state: () => ({
-//         piFamilyMember: []
-//     }),
-//     getters: {
-//         getPiFamilyMember(state) {
-//             return state.piFamilyMember
-//         }
-//     },
-//     actions: {
-//         async readPiFamilyMember() {
-//             const response = await fetch("http://localhost:3000/members")
-//             if (response.ok) {
-//                 const data = await response.json()
-//                 this.piFamilyMember = [...data]
-//             } else {
-
-//             }
-//         },
-//     },
-// })
-
 export const useCurrentPath = defineStore('currentPath', () => {
 
     const route = useRoute()
@@ -60,4 +38,18 @@ export const useStore = defineStore('memberInfo', () => {
         originMember.value = cloneDeep(members)
     }
     return { changeMember, originMember, setMember }
+})
+
+export const useLoadingState = defineStore("loadingState", {
+    state: () => ({
+        loadingState: 0,
+    }),
+    getters: {
+        getLoadingState: (state) => state.loadingState,
+    },
+    actions: {
+        changeLoadingState(num) {
+            this.loadingState = num
+        }
+    }
 })
