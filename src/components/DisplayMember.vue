@@ -1,38 +1,52 @@
 <script setup>
-  import { computed } from 'vue'
+  import { reactive, computed } from 'vue'
   // pinia
   import { storeToRefs } from 'pinia' 
-  import { useStore, useLoadingState } from '../store/store.js'
+  import { useStore, useLoadingState, useSearchState } from '../store/store.js'
   // composables
   import { comfirmSwal, resultSwal } from '../composables/useAlert'
   // directives
   import { vNumOnly } from "../directives/useDealInput";
-  // firebase
-  import { db } from '../firebase/index.js'
-  import { deleteDoc, doc, setDoc } from '@firebase/firestore'
-import { getApiResult } from '../composables/useApiResult';
-
-  // 要賦值給 props 才會讀的到?
-  const props = defineProps({
-    passSearchName: {
-      type: String,
-      default: "",
-    },
-  })
+  import { getApiResult } from '../composables/useApiResult';
 
   const { setMember } = useStore()
   setMember()
   const { changeMember, originMember } = storeToRefs(useStore())
 
-  const useLoading = useLoadingState()
-  const { loadingState } = storeToRefs(useLoading)
-  
+  const { changeLoadingState } = useLoadingState()
+  const { loadingState } = storeToRefs(useLoadingState())
+
+  const { inputName, selectGender } = storeToRefs(useSearchState()) 
+
+  // filterMember by searchState
   const filterFamilyMember = computed(() => {
-    return changeMember.value.filter(member => {
-      return member.name.toUpperCase().indexOf(props.passSearchName.toUpperCase()) >= 0
+    let resultMember = changeMember.value.filter(member => {
+      return member.name.toUpperCase().indexOf(inputName.value.toUpperCase()) >= 0
     })
+
+    if (selectGender.value !== -1) {
+      resultMember = resultMember.filter(member => member.gender === selectGender.value)
+    }
+
+    return resultMember
   })
 
+  // table header name
+  const userTableInfo = reactive(["Name", "Age", "Gender", "Action"])
+
+  // table user gender input
+  const genderInfo = reactive([
+    {
+      genderText: "female",
+      genderValue: 0
+    },
+    {
+      genderText: "male",
+      genderValue: 1
+    }
+  ])
+
+  // edit button
   const editMember = (member) => {
     // 傳物件進來 還是 proxy 物件的資料 但如果傳進來是 物件裡的屬性 只會有值 就會失去反應性
     changeMember.value.forEach(member => {
@@ -41,6 +55,7 @@ import { getApiResult } from '../composables/useApiResult';
     member.isEditting = true
   }
 
+  // save buuton
   const updateMember = async (member) => {
     const { id, name, age, gender } = member
 
@@ -55,24 +70,19 @@ import { getApiResult } from '../composables/useApiResult';
     }
 
     try {
-      useLoading.changeLoadingState(1)
+      changeLoadingState(1)
 
-      const data = await getApiResult('/member', "updatePiPiMembers", { id, name, age, gender })
-      // await setDoc(doc(db, "members", id), {
-      //   name,
-      //   age,
-      //   gender
-      // })
-
+      const data = await getApiResult('/members', "updatePiPiMembers", { id, name, age, gender })
       await setMember()
 
-      useLoading.changeLoadingState(0)
+      changeLoadingState(0)
       resultSwal("update success", "success")
     } catch (err) {
       resultSwal("update fail", "error")
     }
   }
 
+  // cancel button
   const cancelEdit = (member) => {
     // 賦值可以因為不會影響到畫面, 但要被改變值就會失去反應性
     const { name, age, gender, isEditting } = originMember.value.find(oMembewr => oMembewr.id === member.id)
@@ -82,21 +92,21 @@ import { getApiResult } from '../composables/useApiResult';
     member.isEditting = isEditting
   }
 
+  // delete button
   const deleteMember = async (id) => {
     const confirmResult = await comfirmSwal("sure to delete?", "warning")
     if (confirmResult) {
       try {
-        useLoading.changeLoadingState(1)
+        changeLoadingState(1)
 
-        const data = await getApiResult('/member', "deletePiPiMembers", { id })
-        // await deleteDoc(doc(db, "members", id))
+        const data = await getApiResult('/members', "deletePiPiMembers", { id })
 
         changeMember.value = changeMember.value.filter(member => member.id !== id)
 
-        useLoading.changeLoadingState(0)
+        changeLoadingState(0)
         resultSwal("delete success", "success")
       } catch (error) {
-        resultSwal("delete success", "error")
+        resultSwal("delete failed", "error")
       }
     }
   }
@@ -108,10 +118,7 @@ import { getApiResult } from '../composables/useApiResult';
     <table class="table is-hoverable is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
-          <th class="is-size-4">Name</th>
-          <th class="is-size-4">Age</th>
-          <th class="is-size-4">Gender</th>
-          <th class="is-size-4">Action</th>
+          <th v-for="tableName of userTableInfo" class="is-size-4">{{ tableName }}</th>
         </tr>
       </thead>
       <tbody>
@@ -141,21 +148,17 @@ import { getApiResult } from '../composables/useApiResult';
             <div class="is-size-5" v-show="!member.isEditting">{{ member.gender ? "male" : "female" }}</div>
             <div class="field" v-show="member.isEditting">
               <div class="control">
-                <label class="radio mr-2 is-size-5">
+                <label
+                  class="radio mr-2 is-size-5"
+                  v-for="genderItem of genderInfo"
+                  :key="genderItem.genderText"
+                >
                   <input
                     class="mr-1"
                     type="radio"
-                    :value="0"
+                    :value="genderItem.genderValue"
                     v-model="member.gender"
-                  >Female
-                </label>
-                <label class="radio is-size-5">
-                  <input
-                    class="mr-1"
-                    type="radio"
-                    :value="1"
-                    v-model="member.gender"
-                  >Male
+                  >{{ genderItem.genderText }}
                 </label>
               </div>
             </div>

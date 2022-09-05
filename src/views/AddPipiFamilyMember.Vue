@@ -3,19 +3,19 @@
   // vueRouter
   import { useRouter } from 'vue-router'
   // pinia
-  import { useCurrentPath, useLoadingState } from '../store/store.js'
   import { storeToRefs } from 'pinia'
+  import { useCurrentPath, useLoadingState } from '../store/store.js'
   // composables
   import { resultSwal } from '../composables/useAlert'
   import { getApiResult } from '../composables/useApiResult'
   // directives
   import { vFocus, vNumOnly } from '../directives/useDealInput'
 
-  const usePath = useCurrentPath()
-  usePath.setCurrentPath('/AddPipiFamilyMember')
+  const { setCurrentPath } = useCurrentPath()
+  setCurrentPath('/AddPipiFamilyMember')
 
-  const useLoading = useLoadingState()
-  const { loadingState } = storeToRefs(useLoading)
+  const { changeLoadingState } = useLoadingState()
+  const { loadingState } = storeToRefs(useLoadingState())
 
   const addMemberInfo = ref({
     name: "",
@@ -46,11 +46,11 @@
     }
 
     try {
-      useLoading.changeLoadingState(1)
-      const data = await getApiResult("/member", "addPiPiMembers", addMemberInfo.value)
-      useLoading.changeLoadingState(0)
+      changeLoadingState(1)
+      const data = await getApiResult("/members", "addPiPiMembers", addMemberInfo.value)
+      changeLoadingState(0)
       resultSwal(data.message, "success")
-      usePath.setCurrentPath('/')
+      setCurrentPath('/')
       router.push({ path: "/" })
     } catch (err) {
       resultSwal("Add new member failed", "error")

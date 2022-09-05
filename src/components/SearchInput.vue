@@ -1,53 +1,53 @@
 <script setup>
-  import { ref, watch } from 'vue'
+  import { reactive } from "vue"
+  // pinia
+  import { storeToRefs } from "pinia";
+  import { useSearchState } from "../store/store";
   // directives
   import { vFocus } from '../directives/useDealInput';
 
-  const emit = defineEmits(['changeInputName'])
+  const { inputName, selectGender } = storeToRefs(useSearchState())
 
-  const inputName = ref('')
-
-  watch(inputName, (newVal) => {
-    emit('changeInputName', newVal)
-  })
-
-  // const inputNameTwo = reactive({
-  //   name: '',
-  // })
-
-  // // 監聽 reactive 裡面的資料 需要用callback Fn
-  // watch(() => inputNameTwo.name, newVal => {
-  //   emit('changeInputName', newVal)
-  // })
+  const genderInfo = reactive([
+    {
+      genderText: "all select",
+      genderValue: -1
+    },
+    {
+      genderText: "female",
+      genderValue: 0
+    },
+    {
+      genderText: "male",
+      genderValue: 1
+    }
+  ])
 
 </script>
 
 <template>
-  <div class="columns field is-grouped">
-    <p class="column is-half is-offset-one-quarter control">
-      <input v-focus v-model="inputName" class="input is-large" type="text" placeholder="Search Name">
-    </p>
-  </div>
-  <!-- <div class="field">
-    <div class="control">
-      <label class="radio">
-        <input
-          type="radio"
-          name="question"
-          :value="0"
-          v-model="addMemberInfo.gender"
-        >Female
-      </label>
-      <label class="radio">
-        <input
-          type="radio"
-          name="question"
-          :value="1"
-          v-model="addMemberInfo.gender"
-        >Male
-      </label>
+  <div class="columns field">
+    <div class="column is-half is-offset-one-quarter control">
+      <p>
+        <input v-focus v-model="inputName" class="input is-large" type="text" placeholder="Search Name">
+      </p>
+      <div class="mt-4">
+        <label
+          class="radio mr-2"
+          v-for="genderItem of genderInfo"
+          :key="genderItem.genderText"
+        >
+          <input
+            type="radio"
+            name="question"
+            class="mr-1"
+            :value="genderItem.genderValue"
+            v-model="selectGender"
+          >{{ genderItem.genderText }}
+        </label>
+      </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <style scoped>

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref} from 'vue';
 // router
 import { useRoute } from 'vue-router'
 // pinia
@@ -27,7 +27,7 @@ export const useStore = defineStore('memberInfo', () => {
     const originMember = ref([])
     const setMember = async () => {
         try {
-            const data = await getApiResult("/member", "readPiPiMembers")
+            const data = await getApiResult("/members", "readPiPiMembers")
             changeMember.value = [...data]
             originMember.value = cloneDeep(data)
         } catch (err) {
@@ -49,4 +49,10 @@ export const useLoadingState = defineStore("loadingState", {
             this.loadingState = num
         }
     }
+})
+
+export const useSearchState = defineStore("searchState", () => {
+    const inputName = ref("")
+    const selectGender = ref(-1)
+    return { inputName, selectGender }
 })
