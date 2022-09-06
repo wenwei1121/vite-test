@@ -1,4 +1,5 @@
 <script setup>
+  import GenderInput from '../components/GenderInput.vue'
   import { ref } from 'vue'
   // vueRouter
   import { useRouter } from 'vue-router'
@@ -86,26 +87,7 @@
         </div>
       </div>
 
-      <div class="field">
-        <div class="control">
-          <label class="radio mr-2 is-size-5">
-            <input
-              class="mr-1 is-size-5"
-              type="radio"
-              :value="0"
-              v-model="addMemberInfo.gender"
-            >Female
-          </label>
-          <label class="radio mr-2 is-size-5">
-            <input
-              class="mr-1"
-              type="radio"
-              :value="1"
-              v-model="addMemberInfo.gender"
-            >Male
-          </label>
-        </div>
-      </div>
+      <GenderInput v-model:genderValue="addMemberInfo.gender" />
 
       <div class="field is-grouped">
         <div class="control">

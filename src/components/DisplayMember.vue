@@ -1,4 +1,5 @@
 <script setup>
+  import GenderInput from './GenderInput.vue'
   import { reactive, computed } from 'vue'
   // pinia
   import { storeToRefs } from 'pinia' 
@@ -50,18 +51,6 @@
 
   // table header name
   const userTableInfo = reactive(["Name", "Age", "Gender", "Action"])
-
-  // table user gender input
-  const genderInfo = reactive([
-    {
-      genderText: "female",
-      genderValue: 0
-    },
-    {
-      genderText: "male",
-      genderValue: 1
-    }
-  ])
 
   // edit button
   const editMember = (member) => {
@@ -163,22 +152,7 @@
           </td>
           <td>
             <div class="is-size-5" v-show="!member.isEditting">{{ member.gender ? "male" : "female" }}</div>
-            <div class="field" v-show="member.isEditting">
-              <div class="control">
-                <label
-                  class="radio mr-2 is-size-5"
-                  v-for="genderItem of genderInfo"
-                  :key="genderItem.genderText"
-                >
-                  <input
-                    class="mr-1"
-                    type="radio"
-                    :value="genderItem.genderValue"
-                    v-model="member.gender"
-                  >{{ genderItem.genderText }}
-                </label>
-              </div>
-            </div>
+            <GenderInput v-show="member.isEditting" v-model:genderValue="member.gender" />
           </td>
           <td>
             <div class="buttons" v-show="!member.isEditting">
