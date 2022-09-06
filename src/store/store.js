@@ -1,6 +1,4 @@
 import { ref} from 'vue';
-// router
-import { useRoute } from 'vue-router'
 // pinia
 import { defineStore } from 'pinia'
 // composables
@@ -10,10 +8,7 @@ import { getApiResult } from '../composables/useApiResult'
 import { cloneDeep } from 'lodash'
 
 export const useCurrentPath = defineStore('currentPath', () => {
-
-    const route = useRoute()
-
-    const currentPath = ref(route.path)
+    const currentPath = ref("")
 
     const setCurrentPath = passPathValue => {
         currentPath.value = passPathValue
@@ -53,6 +48,8 @@ export const useLoadingState = defineStore("loadingState", {
 
 export const useSearchState = defineStore("searchState", () => {
     const inputName = ref("")
+    const selectComparisonOperator = ref("no")
+    const inputAge = ref(0)
     const selectGender = ref(-1)
-    return { inputName, selectGender }
+    return { inputName, selectComparisonOperator, inputAge, selectGender }
 })

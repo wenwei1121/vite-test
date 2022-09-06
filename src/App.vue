@@ -1,26 +1,36 @@
 <script setup>
+  import { reactive } from 'vue';
   // router
   import { RouterLink, RouterView } from 'vue-router'
   // pinia
   import { storeToRefs } from 'pinia';
   import { useCurrentPath } from './store/store.js';
+  
+  const { currentPath } = storeToRefs(useCurrentPath())
 
-  const usePath = useCurrentPath()
-  const { currentPath } = storeToRefs(usePath)
+  const pathInfos = reactive([
+    {
+      path: "/",
+      tabName: "SHOW MEMBER"
+    },
+    {
+      path: "/AddPipiFamilyMember",
+      tabName: "ADD MEMBER"
+    }
+  ])
 
 </script>
 
 <template>
   <div class="tabs is-centered is-large">
     <ul>
-      <li :class="[currentPath === '/' ? 'is-active' : '']">
-        <RouterLink to="/" @click="usePath.setCurrentPath('/')">
-          <span>SHOW MEMBER</span>
-        </RouterLink>
-      </li>
-      <li :class="[currentPath === '/AddPipiFamilyMember' ? 'is-active' : '']">
-        <RouterLink to="/AddPipiFamilyMember" @click="usePath.setCurrentPath('/AddPipiFamilyMember')">
-          <span>Add MEMBER</span>
+      <li
+        v-for="pathItem of pathInfos"
+        :key="pathItem.path"
+        :class="[currentPath === pathItem.path ? 'is-active' : '']"
+      >
+        <RouterLink :to=pathItem.path>
+          <span>{{ pathItem.tabName }}</span>
         </RouterLink>
       </li>
     </ul>
@@ -29,5 +39,5 @@
 </template>
 
 <style>
-@import 'bulma/css/bulma.min.css';
+  @import 'bulma/css/bulma.min.css';
 </style>

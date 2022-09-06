@@ -4,9 +4,36 @@
   import { storeToRefs } from "pinia";
   import { useSearchState } from "../store/store";
   // directives
-  import { vFocus } from '../directives/useDealInput';
+  import { vFocus, vNumOnly } from '../directives/useDealInput';
 
-  const { inputName, selectGender } = storeToRefs(useSearchState())
+  const { inputName, selectComparisonOperator, inputAge, selectGender } = storeToRefs(useSearchState())
+
+  const operatorKind = reactive([
+    {
+      text: "no select",
+      value: "no"
+    },
+    {
+      text: ">",
+      value: "greater"
+    },
+    {
+      text: "<",
+      value: "less"
+    },
+    {
+      text: "=",
+      value: "equal"
+    },
+    {
+      text: ">=",
+      value: "greaterOrEqual"
+    },
+    {
+      text: "<=",
+      value: "lessOrEqual"
+    }
+  ])
 
   const genderInfo = reactive([
     {
@@ -28,9 +55,35 @@
 <template>
   <div class="columns field">
     <div class="column is-half is-offset-one-quarter control">
-      <p>
-        <input v-focus v-model="inputName" class="input is-large" type="text" placeholder="Search Name">
-      </p>
+      <div>
+        <input
+          v-focus
+          v-model="inputName"
+          class="input is-large"
+          type="text"
+          placeholder="Search Name"
+        >
+      </div>
+      <div class="columns mt-4">
+        <div class="column is-3 select is-small">
+          <select v-model="selectComparisonOperator">
+            <option
+              v-for="operatorItem of operatorKind"
+              :key="operatorItem.text"
+              :value="operatorItem.value"
+            >{{ operatorItem.text }}
+            </option>
+          </select>
+        </div>
+        <div class="column is-2">
+          <input
+            class="input is-small"
+            type="number"
+            v-num-only
+            v-model.number="inputAge"
+          >
+        </div>
+      </div>
       <div class="mt-4">
         <label
           class="radio mr-2"

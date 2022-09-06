@@ -16,19 +16,36 @@
   const { changeLoadingState } = useLoadingState()
   const { loadingState } = storeToRefs(useLoadingState())
 
-  const { inputName, selectGender } = storeToRefs(useSearchState()) 
+  const { inputName, selectComparisonOperator, inputAge, selectGender } = storeToRefs(useSearchState()) 
 
   // filterMember by searchState
   const filterFamilyMember = computed(() => {
-    let resultMember = changeMember.value.filter(member => {
-      return member.name.toUpperCase().indexOf(inputName.value.toUpperCase()) >= 0
+    return changeMember.value.filter(member => {
+      if (member.name.toUpperCase().indexOf(inputName.value.toUpperCase()) === -1) {
+        return false
+      }
+
+      if (selectGender.value !== -1 && member.gender !== selectGender.value) {
+        return false
+      }
+
+      if (selectComparisonOperator.value !== "no" && inputAge.value !== "") {
+        switch (selectComparisonOperator.value) {
+          case "greater":
+            return member.age > inputAge.value
+          case "less":
+            return member.age < inputAge.value
+          case "equal":
+            return member.age === inputAge.value
+          case "greaterOrEqual":
+            return member.age >= inputAge.value
+          case "lessOrEqual":
+            return member.age <= inputAge.value
+        }
+      }
+
+      return true
     })
-
-    if (selectGender.value !== -1) {
-      resultMember = resultMember.filter(member => member.gender === selectGender.value)
-    }
-
-    return resultMember
   })
 
   // table header name
