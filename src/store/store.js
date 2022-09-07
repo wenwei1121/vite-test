@@ -1,4 +1,4 @@
-import { ref} from 'vue';
+import { ref, reactive } from 'vue';
 // pinia
 import { defineStore } from 'pinia'
 // composables
@@ -47,9 +47,18 @@ export const useLoadingState = defineStore("loadingState", {
 })
 
 export const useSearchState = defineStore("searchState", () => {
-    const inputName = ref("")
-    const selectComparisonOperator = ref("no")
-    const inputAge = ref(0)
-    const selectGender = ref(-1)
-    return { inputName, selectComparisonOperator, inputAge, selectGender }
+    const searchInitState = {
+        inputName: "",
+        selectComparisonOperator: "no",
+        inputAge: 0,
+        selectGender: -1
+    }
+
+    let searchInfo = reactive({ ...searchInitState })
+
+    const resetSearchInfo = () => {
+        Object.assign(searchInfo, searchInitState)
+    }
+
+    return { searchInfo, resetSearchInfo }
 })

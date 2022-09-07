@@ -1,38 +1,18 @@
 <script setup>
   import { reactive } from "vue"
-  // pinia
-  import { storeToRefs } from "pinia";
   import { useSearchState } from "../store/store";
   // directives
   import { vFocus, vNumOnly } from '../directives/useDealInput';
 
-  const { inputName, selectComparisonOperator, inputAge, selectGender } = storeToRefs(useSearchState())
+  const { searchInfo, resetSearchInfo } = useSearchState()
 
   const operatorKind = reactive([
-    {
-      text: "no select",
-      value: "no"
-    },
-    {
-      text: ">",
-      value: "greater"
-    },
-    {
-      text: "<",
-      value: "less"
-    },
-    {
-      text: "=",
-      value: "equal"
-    },
-    {
-      text: ">=",
-      value: "greaterOrEqual"
-    },
-    {
-      text: "<=",
-      value: "lessOrEqual"
-    }
+    { text: "no select", value: "no" },
+    { text: ">", value: "greater" },
+    { text: "<", value: "less" },
+    { text: "=", value: "equal" },
+    { text: ">=", value: "greaterOrEqual" },
+    { text: "<=", value: "lessOrEqual" }
   ])
 
   const genderInfo = reactive([
@@ -58,7 +38,7 @@
       <div>
         <input
           v-focus
-          v-model="inputName"
+          v-model="searchInfo.inputName"
           class="input is-large"
           type="text"
           placeholder="Search Name"
@@ -66,7 +46,7 @@
       </div>
       <div class="columns mt-4">
         <div class="column is-3 select is-small">
-          <select v-model="selectComparisonOperator">
+          <select v-model="searchInfo.selectComparisonOperator">
             <option
               v-for="operatorItem of operatorKind"
               :key="operatorItem.text"
@@ -77,10 +57,10 @@
         </div>
         <div class="column is-2">
           <input
+            v-num-only
+            v-model.number="searchInfo.inputAge"
             class="input is-small"
             type="number"
-            v-num-only
-            v-model.number="inputAge"
           >
         </div>
       </div>
@@ -95,9 +75,16 @@
             name="question"
             class="mr-1"
             :value="genderItem.genderValue"
-            v-model="selectGender"
+            v-model="searchInfo.selectGender"
           >{{ genderItem.genderText }}
         </label>
+      </div>
+      <div class="mt-4">
+        <button 
+          class="button is-outlined is-clickable"
+          @click="resetSearchInfo"
+        >reset
+        </button>
       </div>
     </div>
   </div>

@@ -1,11 +1,11 @@
 <script setup>
-  import GenderInput from './GenderInput.vue'
   import { reactive, computed } from 'vue'
   // pinia
   import { storeToRefs } from 'pinia' 
   import { useStore, useLoadingState, useSearchState } from '../store/store.js'
   // composables
   import { comfirmSwal, resultSwal } from '../composables/useAlert'
+  import { CheckInputAction } from '../composables/useCheck';
   // directives
   import { vNumOnly } from "../directives/useDealInput";
   import { getApiResult } from '../composables/useApiResult';
@@ -17,31 +17,31 @@
   const { changeLoadingState } = useLoadingState()
   const { loadingState } = storeToRefs(useLoadingState())
 
-  const { inputName, selectComparisonOperator, inputAge, selectGender } = storeToRefs(useSearchState()) 
+  const { searchInfo } = useSearchState()
 
   // filterMember by searchState
   const filterFamilyMember = computed(() => {
     return changeMember.value.filter(member => {
-      if (member.name.toUpperCase().indexOf(inputName.value.toUpperCase()) === -1) {
+      if (member.name.toUpperCase().indexOf(searchInfo.inputName.toUpperCase()) === -1) {
         return false
       }
 
-      if (selectGender.value !== -1 && member.gender !== selectGender.value) {
+      if (searchInfo.selectGender !== -1 && member.gender !== searchInfo.selectGender) {
         return false
       }
 
-      if (selectComparisonOperator.value !== "no" && inputAge.value !== "") {
-        switch (selectComparisonOperator.value) {
+      if (searchInfo.selectComparisonOperator !== "no" && searchInfo.inputAge !== "") {
+        switch (searchInfo.selectComparisonOperator) {
           case "greater":
-            return member.age > inputAge.value
+            return member.age > searchInfo.inputAge
           case "less":
-            return member.age < inputAge.value
+            return member.age < searchInfo.inputAge
           case "equal":
-            return member.age === inputAge.value
+            return member.age === searchInfo.inputAge
           case "greaterOrEqual":
-            return member.age >= inputAge.value
+            return member.age >= searchInfo.inputAge
           case "lessOrEqual":
-            return member.age <= inputAge.value
+            return member.age <= searchInfo.inputAge
         }
       }
 
@@ -52,6 +52,18 @@
   // table header name
   const userTableInfo = reactive(["Name", "Age", "Gender", "Action"])
 
+  // table user gender input
+  const genderInfo = reactive([
+    {
+      genderText: "female",
+      genderValue: 0
+    },
+    {
+      genderText: "male",
+      genderValue: 1
+    }
+  ])
+
   // edit button
   const editMember = (member) => {
     // 傳物件進來 還是 proxy 物件的資料 但如果傳進來是 物件裡的屬性 只會有值 就會失去反應性
@@ -61,41 +73,34 @@
     member.isEditting = true
   }
 
-  // save buuton
+  // save button
   const updateMember = async (member) => {
-    const { id, name, age, gender } = member
+    const { isEditting, ...other } = member
 
-    if (name === "") {
-      resultSwal("Have empty name", "error")
-      return
-    }
+    const errMsg = CheckInputAction(member)
 
-    if (age === "") {
-      resultSwal("Have empty age", "error")
+    if (errMsg) {
+      resultSwal(errMsg, "error")
       return
     }
 
     try {
       changeLoadingState(1)
-
-      const data = await getApiResult('/members', "updatePiPiMembers", { id, name, age, gender })
+      const data = await getApiResult('/members', "updatePiPiMembers", other)
       await setMember()
-
-      changeLoadingState(0)
       resultSwal("update success", "success")
     } catch (err) {
       resultSwal("update fail", "error")
+    } finally {
+      changeLoadingState(0)
     }
   }
 
   // cancel button
   const cancelEdit = (member) => {
     // 賦值可以因為不會影響到畫面, 但要被改變值就會失去反應性
-    const { name, age, gender, isEditting } = originMember.value.find(oMembewr => oMembewr.id === member.id)
-    member.name = name
-    member.age = age
-    member.gender = gender
-    member.isEditting = isEditting
+    const { id, ...other } = originMember.value.find(oMembewr => oMembewr.id === member.id)
+    Object.assign(member, other)
   }
 
   // delete button
@@ -104,15 +109,13 @@
     if (confirmResult) {
       try {
         changeLoadingState(1)
-
         const data = await getApiResult('/members', "deletePiPiMembers", { id })
-
         changeMember.value = changeMember.value.filter(member => member.id !== id)
-
-        changeLoadingState(0)
         resultSwal("delete success", "success")
       } catch (error) {
         resultSwal("delete failed", "error")
+      } finally {
+        changeLoadingState(0)
       }
     }
   }
@@ -152,7 +155,22 @@
           </td>
           <td>
             <div class="is-size-5" v-show="!member.isEditting">{{ member.gender ? "male" : "female" }}</div>
-            <GenderInput v-show="member.isEditting" v-model:genderValue="member.gender" />
+            <div class="field" v-show="member.isEditting">
+              <div class="control">
+                <label
+                  class="radio mr-2 is-size-5"
+                  v-for="genderItem of genderInfo"
+                  :key="genderItem.genderText"
+                >
+                  <input
+                    class="mr-1"
+                    type="radio"
+                    :value="genderItem.genderValue"
+                    v-model="member.gender"
+                  >{{ genderItem.genderText }}
+                </label>
+              </div>
+            </div>
           </td>
           <td>
             <div class="buttons" v-show="!member.isEditting">

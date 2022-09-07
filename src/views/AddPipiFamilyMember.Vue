@@ -1,5 +1,4 @@
 <script setup>
-  import GenderInput from '../components/GenderInput.vue'
   import { ref } from 'vue'
   // vueRouter
   import { useRouter } from 'vue-router'
@@ -9,20 +8,12 @@
   // composables
   import { resultSwal } from '../composables/useAlert'
   import { getApiResult } from '../composables/useApiResult'
+  import { CheckInputAction } from '../composables/useCheck';
   // directives
   import { vFocus, vNumOnly } from '../directives/useDealInput'
 
   const { setCurrentPath } = useCurrentPath()
   setCurrentPath('/AddPipiFamilyMember')
-
-  const { changeLoadingState } = useLoadingState()
-  const { loadingState } = storeToRefs(useLoadingState())
-
-  const addMemberInfo = ref({
-    name: "",
-    age: 0,
-    gender: 0,
-  })
 
   // When working with objects or arrays,
   // since changing their attributes does not change the reference,
@@ -33,27 +24,35 @@
   //   deep: true,
   // })
 
+  const { changeLoadingState } = useLoadingState()
+  const { loadingState } = storeToRefs(useLoadingState())
+
   const router = useRouter()
 
-  const addMember = async () => {
-    if (addMemberInfo.value.name === "") {
-      resultSwal("Have empty name", "error")
-      return
-    }
+  const addMemberInfo = ref({
+    name: "",
+    age: 0,
+    gender: 0,
+  })
 
-    if (addMemberInfo.value.age === "") {
-      resultSwal("Have empty age", "error")
+  const addMember = async () => {
+
+    const errMsg = CheckInputAction(addMemberInfo.value)
+
+    if (errMsg) {
+      resultSwal(errMsg, "error")
       return
     }
 
     try {
       changeLoadingState(1)
       const data = await getApiResult("/members", "addPiPiMembers", addMemberInfo.value)
-      changeLoadingState(0)
       resultSwal(data.message, "success")
       router.push({ path: "/" })
     } catch (err) {
       resultSwal("Add new member failed", "error")
+    } finally {
+      changeLoadingState(0)
     }
   }
 </script>
@@ -87,7 +86,26 @@
         </div>
       </div>
 
-      <GenderInput v-model:genderValue="addMemberInfo.gender" />
+      <div class="field">
+        <div class="control">
+          <label class="radio mr-2 is-size-5">
+            <input
+              class="mr-1 is-size-5"
+              type="radio"
+              :value="0"
+              v-model="addMemberInfo.gender"
+            >Female
+          </label>
+          <label class="radio mr-2 is-size-5">
+            <input
+              class="mr-1"
+              type="radio"
+              :value="1"
+              v-model="addMemberInfo.gender"
+            >Male
+          </label>
+        </div>
+      </div>
 
       <div class="field is-grouped">
         <div class="control">
