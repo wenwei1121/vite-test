@@ -1,0 +1,4 @@
+/* Tailwind 會在構建時將這些指令轉換成所有基於你配置的設計系統的樣式文件 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
