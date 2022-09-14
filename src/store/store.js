@@ -2,8 +2,8 @@ import { ref, reactive } from 'vue';
 // pinia
 import { defineStore } from 'pinia'
 // composables
-import { resultSwal } from '../composables/useAlert'
-import { getApiResult } from '../composables/useApiResult'
+import { resultSwal } from '@/composables/useAlert'
+import { getApiResult } from '@/composables/useApiResult'
 // lodash
 import { cloneDeep } from 'lodash'
 

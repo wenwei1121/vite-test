@@ -1,6 +1,6 @@
 // pinia
 import { storeToRefs } from 'pinia'
-import { useStore } from '../store/store.js'
+import { useStore } from '@/store/store.js'
 
 const { changeMember } = storeToRefs(useStore())
 

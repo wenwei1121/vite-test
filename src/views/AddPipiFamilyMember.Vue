@@ -1,16 +1,18 @@
 <script setup>
   import { ref } from 'vue'
+  // component
+  import GenderInput from '@/components/GenderInput.vue'
   // vueRouter
   import { useRouter } from 'vue-router'
   // pinia
   import { storeToRefs } from 'pinia'
-  import { useCurrentPath, useLoadingState } from '../store/store.js'
+  import { useCurrentPath, useLoadingState } from '@/store/store.js'
   // composables
-  import { resultSwal } from '../composables/useAlert'
-  import { getApiResult } from '../composables/useApiResult'
-  import { CheckInputAction } from '../composables/useCheck';
+  import { resultSwal } from '@/composables/useAlert'
+  import { getApiResult } from '@/composables/useApiResult'
+  import { CheckInputAction } from '@/composables/useCheck';
   // directives
-  import { vFocus, vNumOnly } from '../directives/useDealInput'
+  import { vFocus, vNumOnly } from '@/directives/useDealInput'
 
   const { setCurrentPath } = useCurrentPath()
   setCurrentPath('/AddPipiFamilyMember')
@@ -86,26 +88,7 @@
         </div>
       </div>
 
-      <div class="field">
-        <div class="control">
-          <label class="radio mr-2 is-size-5">
-            <input
-              class="mr-1 is-size-5"
-              type="radio"
-              :value="0"
-              v-model="addMemberInfo.gender"
-            >Female
-          </label>
-          <label class="radio mr-2 is-size-5">
-            <input
-              class="mr-1"
-              type="radio"
-              :value="1"
-              v-model="addMemberInfo.gender"
-            >Male
-          </label>
-        </div>
-      </div>
+      <GenderInput v-model:genderValue="addMemberInfo.gender"/>
 
       <div class="field is-grouped">
         <div class="control">

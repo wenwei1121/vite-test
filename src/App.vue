@@ -4,7 +4,7 @@
   import { RouterLink, RouterView } from 'vue-router'
   // pinia
   import { storeToRefs } from 'pinia';
-  import { useCurrentPath } from './store/store.js';
+  import { useCurrentPath } from '@/store/store.js';
   
   const { currentPath } = storeToRefs(useCurrentPath())
 

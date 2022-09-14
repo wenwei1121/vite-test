@@ -4,12 +4,12 @@ const routes = [
     {
         path: '/',
         name: 'PipiFamily',
-        component: () => import('../views/PipiFamily.vue'),
+        component: () => import('@/views/PipiFamily.vue'),
     },
     {
         path: '/AddPipiFamilyMember',
         name: 'AddPipiFamilyMember',
-        component: () => import('../views/AddPipiFamilyMember.vue'),
+        component: () => import('@/views/AddPipiFamilyMember.vue'),
     }
 ]
 

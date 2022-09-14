@@ -1,8 +1,11 @@
 <script setup>
   import { reactive } from "vue"
-  import { useSearchState } from "../store/store";
+  // components
+  import FavoriteSearch from "./FavoriteSearch.vue";
+  // pinia
+  import { useSearchState } from "@/store/store";
   // directives
-  import { vFocus, vNumOnly } from '../directives/useDealInput';
+  import { vFocus, vNumOnly } from '@/directives/useDealInput';
 
   const { searchInfo, resetSearchInfo } = useSearchState()
 
@@ -85,6 +88,7 @@
           @click="resetSearchInfo"
         >reset
         </button>
+        <FavoriteSearch />
       </div>
     </div>
   </div>

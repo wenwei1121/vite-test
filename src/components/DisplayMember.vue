@@ -1,14 +1,16 @@
 <script setup>
   import { reactive, computed } from 'vue'
+  // component
+  import GenderInput from '@/components/GenderInput.vue'
   // pinia
   import { storeToRefs } from 'pinia' 
-  import { useStore, useLoadingState, useSearchState } from '../store/store.js'
+  import { useStore, useLoadingState, useSearchState } from '@/store/store.js'
   // composables
-  import { comfirmSwal, resultSwal } from '../composables/useAlert'
-  import { CheckInputAction } from '../composables/useCheck';
+  import { comfirmSwal, resultSwal } from '@/composables/useAlert'
+  import { CheckInputAction } from '@/composables/useCheck';
   // directives
-  import { vNumOnly } from "../directives/useDealInput";
-  import { getApiResult } from '../composables/useApiResult';
+  import { vNumOnly } from "@/directives/useDealInput";
+  import { getApiResult } from '@/composables/useApiResult';
 
   const { setMember } = useStore()
   setMember()
@@ -155,22 +157,7 @@
           </td>
           <td>
             <div class="is-size-5" v-show="!member.isEditting">{{ member.gender ? "male" : "female" }}</div>
-            <div class="field" v-show="member.isEditting">
-              <div class="control">
-                <label
-                  class="radio mr-2 is-size-5"
-                  v-for="genderItem of genderInfo"
-                  :key="genderItem.genderText"
-                >
-                  <input
-                    class="mr-1"
-                    type="radio"
-                    :value="genderItem.genderValue"
-                    v-model="member.gender"
-                  >{{ genderItem.genderText }}
-                </label>
-              </div>
-            </div>
+            <GenderInput v-show="member.isEditting" v-model:genderValue="member.gender"/>
           </td>
           <td>
             <div class="buttons" v-show="!member.isEditting">
