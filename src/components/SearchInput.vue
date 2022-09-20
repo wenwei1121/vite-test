@@ -6,6 +6,8 @@
   import { useSearchState } from "@/store/store";
   // directives
   import { vFocus, vNumOnly } from '@/directives/useDealInput';
+  // heroIcon
+  import { ArrowPathIcon } from "@heroicons/vue/24/solid"
 
   const { searchInfo, resetSearchInfo } = useSearchState()
 
@@ -82,12 +84,11 @@
           >{{ genderItem.genderText }}
         </label>
       </div>
-      <div class="mt-4">
-        <button 
-          class="button is-outlined is-clickable"
+      <div class="mt-4 flex gap-x-4">
+        <ArrowPathIcon
+          class="cursor-pointer h-8 w-8 text-blue-400"
           @click="resetSearchInfo"
-        >reset
-        </button>
+        />
         <FavoriteSearch />
       </div>
     </div>
