@@ -1,6 +1,14 @@
 <script setup>
+    import { onMounted } from 'vue'
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+    import { getApiResult } from "@/composables/useApiResult";
     import { HeartIcon } from "@heroicons/vue/24/solid"
+
+    onMounted(async () => {
+        const result = await getApiResult("favorites", "readFavorites")
+        console.log(result);
+    })
+    
 </script>
 
 <template>

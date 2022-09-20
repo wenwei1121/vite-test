@@ -22,7 +22,7 @@ export const useStore = defineStore('memberInfo', () => {
     const originMember = ref([])
     const setMember = async () => {
         try {
-            const data = await getApiResult("/members", "readPiPiMembers")
+            const data = await getApiResult("members", "readPiPiMembers")
             changeMember.value = [...data]
             originMember.value = cloneDeep(data)
         } catch (err) {
