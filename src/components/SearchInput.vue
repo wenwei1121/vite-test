@@ -1,9 +1,11 @@
 <script setup>
   import { reactive } from "vue"
   // components
-  import FavoriteSearch from "./FavoriteSearch.vue";
+  import FavoriteSearch from "./FavoriteSearch.vue"
+  import GenderInput from "./GenderInput.vue";
+  import Select from "./Select.vue"
   // pinia
-  import { useSearchState } from "@/store/store";
+  import { useSearchState } from "@/store/store"
   // directives
   import { vFocus, vNumOnly } from '@/directives/useDealInput';
   // heroIcon
@@ -49,48 +51,27 @@
           placeholder="Search Name"
         >
       </div>
-      <div class="columns mt-4">
-        <div class="column is-3 select is-small">
-          <select v-model="searchInfo.selectComparisonOperator">
-            <option
-              v-for="operatorItem of operatorKind"
-              :key="operatorItem.text"
-              :value="operatorItem.value"
-            >{{ operatorItem.text }}
-            </option>
-          </select>
-        </div>
-        <div class="column is-2">
-          <input
-            v-num-only
-            v-model.number="searchInfo.inputAge"
-            class="input is-small"
-            type="number"
-          >
-        </div>
-      </div>
-      <div class="mt-4">
-        <label
-          class="radio mr-2"
-          v-for="genderItem of genderInfo"
-          :key="genderItem.genderText"
+      <Select
+        v-model:selectTarget="searchInfo.selectComparisonOperator"
+        :selectItems="operatorKind"
+      />
+      <div class="column is-2">
+        <input
+          v-num-only
+          v-model.number="searchInfo.inputAge"
+          class="input is-small"
+          type="number"
         >
-          <input
-            type="radio"
-            name="question"
-            class="mr-1"
-            :value="genderItem.genderValue"
-            v-model="searchInfo.selectGender"
-          >{{ genderItem.genderText }}
-        </label>
       </div>
-      <div class="mt-4 flex gap-x-4">
-        <ArrowPathIcon
+      <GenderInput
+        v-model:genderValue="searchInfo.selectGender"
+        :radioItems="genderInfo"
+      />
+      <ArrowPathIcon
           class="cursor-pointer h-8 w-8 text-blue-400"
           @click="resetSearchInfo"
         />
-        <FavoriteSearch />
-      </div>
+      <FavoriteSearch />
     </div>
   </div>
 </template>

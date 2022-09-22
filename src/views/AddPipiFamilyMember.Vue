@@ -26,6 +26,17 @@
   //   deep: true,
   // })
 
+  const genderInfo = reactive([
+    {
+      genderText: "female",
+      genderValue: 0
+    },
+    {
+      genderText: "male",
+      genderValue: 1
+    }
+  ])
+
   const { changeLoadingState } = useLoadingState()
   const { loadingState } = storeToRefs(useLoadingState())
 
@@ -88,7 +99,7 @@
         </div>
       </div>
 
-      <GenderInput v-model:genderValue="addMemberInfo.gender"/>
+      <GenderInput v-model:genderValue="addMemberInfo.gender" :radioItems="genderInfo" />
 
       <div class="field is-grouped">
         <div class="control">

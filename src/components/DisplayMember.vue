@@ -157,7 +157,7 @@
           </td>
           <td>
             <div class="is-size-5" v-show="!member.isEditting">{{ member.gender ? "male" : "female" }}</div>
-            <GenderInput v-show="member.isEditting" v-model:genderValue="member.gender"/>
+            <GenderInput v-show="member.isEditting" v-model:genderValue="member.gender" :radioItems="genderInfo" />
           </td>
           <td>
             <div class="buttons" v-show="!member.isEditting">
