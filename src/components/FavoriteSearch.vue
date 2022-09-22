@@ -1,14 +1,30 @@
 <script setup>
-    import { onMounted } from 'vue'
-    import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+    import { ref, onMounted } from 'vue'
+    // pinia
+    import { useSearchState } from "@/store/store"
+    // composables
     import { getApiResult } from "@/composables/useApiResult";
+    // headlessui
+    import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+    // heroIcons
     import { HeartIcon } from "@heroicons/vue/24/solid"
+
+    const { searchInfo } = useSearchState()
+
+    const favorites = ref([])
 
     onMounted(async () => {
         const result = await getApiResult("favorites", "readFavorites")
-        console.log(result);
+        favorites.value = [...result]
     })
-    
+
+    const applyConditions = conditions => {
+        searchInfo.inputName = conditions.name
+        searchInfo.selectComparisonOperator = conditions.operator
+        searchInfo.inputAge = conditions.age
+        searchInfo.selectGender = conditions.gender
+    }
+
 </script>
 
 <template>
@@ -18,16 +34,17 @@
         </PopoverButton>
 
         <PopoverPanel class="absolute z-10 p-3 text-gray-100 bg-gray-800">
-            <div class="flex flex-col gap-y-1">
-                <a href="/analytics">Analytics</a>
-                <a href="/engagement">Engagement</a>
-                <a href="/security">Security</a>
-                <a href="/integrations">Integrations</a>
-            </div>
+            <ul class="flex flex-col gap-y-1">
+                <li
+                    class="cursor-pointer"
+                    v-for="item of favorites"
+                    :key="item.id"
+                    @click="applyConditions(item.conditions)"
+                >{{ item.name }}</li>
+            </ul>
             <div>
                 
             </div>
-
         </PopoverPanel>
     </Popover>
 </template>
