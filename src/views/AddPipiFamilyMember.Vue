@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   // component
   import GenderInput from '@/components/GenderInput.vue'
   // vueRouter

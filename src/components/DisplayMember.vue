@@ -89,8 +89,12 @@
     try {
       changeLoadingState(1)
       const data = await getApiResult('/members', "updatePiPiMembers", other)
-      await setMember()
-      resultSwal("update success", "success")
+      if (data.status === "ok") {
+        await setMember()
+        resultSwal("update success", "success")
+      } else {
+        resultSwal("update fail", "error")
+      }
     } catch (err) {
       resultSwal("update fail", "error")
     } finally {
@@ -106,19 +110,24 @@
   }
 
   // delete button
-  const deleteMember = async (id) => {
-    const confirmResult = await comfirmSwal("sure to delete?", "warning")
-    if (confirmResult) {
-      try {
-        changeLoadingState(1)
-        const data = await getApiResult('/members', "deletePiPiMembers", { id })
-        changeMember.value = changeMember.value.filter(member => member.id !== id)
+  const deleteMember = async (member) => {
+    const confirmResult = await comfirmSwal(`sure to delete ${member.name} member ?`, "warning")
+    if (!confirmResult) {
+      return
+    }
+    try {
+      changeLoadingState(1)
+      const data = await getApiResult('/members', "deletePiPiMembers", { id: member.id })
+      if (data.status === "ok") {
+        changeMember.value = changeMember.value.filter(changeMember => changeMember.id !== member.id)
         resultSwal("delete success", "success")
-      } catch (error) {
+      } else {
         resultSwal("delete failed", "error")
-      } finally {
-        changeLoadingState(0)
       }
+    } catch (error) {
+      resultSwal("delete failed", "error")
+    } finally {
+      changeLoadingState(0)
     }
   }
 </script>

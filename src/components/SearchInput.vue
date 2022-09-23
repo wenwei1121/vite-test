@@ -67,11 +67,13 @@
         v-model:genderValue="searchInfo.selectGender"
         :radioItems="genderInfo"
       />
-      <ArrowPathIcon
+      <div class="flex gap-x-2">
+        <ArrowPathIcon
           class="cursor-pointer h-8 w-8 text-blue-400"
           @click="resetSearchInfo"
         />
-      <FavoriteSearch />
+        <FavoriteSearch />
+      </div>
     </div>
   </div>
 </template>

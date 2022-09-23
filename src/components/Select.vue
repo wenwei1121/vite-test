@@ -20,7 +20,7 @@
 </script>
 <template>
     <Listbox
-        :modalValue="selectTarget"
+        :modalValue="props.selectTarget"
         @update:modelValue="value => emits('update:selectTarget', value)"
     >
       <div class="relative mt-1">
