@@ -1,5 +1,6 @@
 <script setup>
-    import { reactive } from 'vue';
+    // vueuse
+    import { useVModel } from '@vueuse/core'
     // headlessui
     import {
         RadioGroup,
@@ -10,17 +11,17 @@
     import { CheckIcon } from '@heroicons/vue/20/solid'
 
     const props = defineProps(["genderValue", "radioItems"])
-    const emits = defineEmits(["update:genderValue", "update:modelValue"])
+    const emits = defineEmits(["update:genderValue"])
+
+    // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref)
+    const useVModelGenderValue = useVModel(props, "genderValue", emits)
     
 </script>
   
 <template>
     <div class="w-full px-4 py-16">
         <div class="mx-auto w-full max-w-md">
-        <RadioGroup
-            :modelValue="props.genderValue"
-            @update:modelValue="value => emits('update:genderValue', value)"
-        >
+        <RadioGroup v-model="useVModelGenderValue">
             <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
             <div class="space-y-2">
             <RadioGroupOption

@@ -1,28 +1,29 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { computed } from 'vue'
+  // vueuse
+  import { useVModel } from '@vueuse/core'
   // headlessui
   import {
     Listbox,
-    ListboxLabel,
     ListboxButton,
     ListboxOptions,
     ListboxOption
   } from '@headlessui/vue'
   // heroIcon
-  import { CheckIcon,ChevronUpDownIcon } from "@heroicons/vue/24/solid"
+  import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid"
 
   const props = defineProps(["selectTarget", "selectItems"])
   const emits = defineEmits(["update:selectTarget"])
 
+  // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref) 賦予的變數需要 .value
+  const useVModelSelectTarget = useVModel(props, "selectTarget", emits)
+
   const selectTargetText = computed(() => {
-    return props.selectItems.find(item => item.value === props.selectTarget).text
+    return props.selectItems.find(({ value }) => value === useVModelSelectTarget.value).text
   })
 </script>
 <template>
-    <Listbox
-        :modalValue="props.selectTarget"
-        @update:modelValue="value => emits('update:selectTarget', value)"
-    >
+    <Listbox v-model="useVModelSelectTarget">
       <div class="relative mt-1">
         <ListboxButton
           class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
@@ -64,8 +65,8 @@
                     selected ? 'font-medium' : 'font-normal',
                     'block truncate',
                   ]"
-                  >{{ person.text }}</span
-                >
+                  >{{ person.text }}
+                </span>
                 <span
                   v-if="selected"
                   class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"

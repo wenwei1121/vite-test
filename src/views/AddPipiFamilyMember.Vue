@@ -59,8 +59,8 @@
 
     try {
       changeLoadingState(1)
-      const data = await getApiResult("/members", "addPiPiMembers", addMemberInfo.value)
-      resultSwal(data.message, "success")
+      const { message } = await getApiResult("/members", "addPiPiMembers", addMemberInfo.value)
+      resultSwal(message, "success")
       router.push({ path: "/" })
     } catch (err) {
       resultSwal("Add new member failed", "error")
