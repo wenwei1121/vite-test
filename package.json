@@ -9,9 +9,8 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.1",
     "@heroicons/vue": "^2.0.11",
-    "@vueuse/core": "^9.0.2",
+    "@vueuse/core": "^9.3.0",
     "bulma": "^0.9.4",
-    "lodash": "^4.17.21",
     "pinia": "^2.0.14",
     "vue": "^3.2.25",
     "vue-router": "^4.1.1",

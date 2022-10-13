@@ -1,9 +1,8 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref } from 'vue'
     // components
     import Modal from "./modal.vue"
     // pinia
-    import { storeToRefs } from 'pinia';
     import { useLoadingState, useSearchState } from "@/store/store"
     // composables
     import { comfirmSwal, resultSwal } from '@/composables/useAlert';

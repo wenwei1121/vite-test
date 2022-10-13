@@ -1,11 +1,11 @@
-import { ref, reactive } from 'vue';
+import { ref, computed, reactive } from 'vue';
 // pinia
 import { defineStore } from 'pinia'
 // composables
 import { resultSwal } from '@/composables/useAlert'
 import { getApiResult } from '@/composables/useApiResult'
-// lodash
-import { cloneDeep } from 'lodash'
+// vueuse
+import { useCloned } from '@vueuse/core' 
 
 export const useCurrentPath = defineStore('currentPath', () => {
     const currentPath = ref("")
@@ -24,7 +24,8 @@ export const useStore = defineStore('memberInfo', () => {
         try {
             const data = await getApiResult("members", "readPiPiMembers")
             changeMember.value = [...data]
-            originMember.value = cloneDeep(data)
+            const { cloned: clonedData } = useCloned(data)
+            originMember.value = clonedData.value
         } catch (err) {
             resultSwal("Reading members failed", "error")
         }
@@ -32,17 +33,21 @@ export const useStore = defineStore('memberInfo', () => {
     return { changeMember, originMember, setMember }
 })
 
-export const useLoadingState = defineStore("loadingState", {
-    state: () => ({
-        loadingState: 0,
-    }),
-    getters: {
-        getLoadingState: (state) => state.loadingState,
-    },
-    actions: {
-        changeLoadingState(num) {
-            this.loadingState = num
-        }
+export const useLoadingState = defineStore("loadingState", () => {
+    const loadingState = ref(0)
+
+    const getLoadingState = computed(() => {
+        return loadingState.value
+    })
+
+    const changeLoadingState = (num) => {
+        loadingState.value = num
+    }
+
+    return {
+        loadingState,
+        getLoadingState,
+        changeLoadingState
     }
 })
 
