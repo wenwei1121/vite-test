@@ -20,6 +20,38 @@ export const useCurrentPath = defineStore('currentPath', () => {
 export const useStore = defineStore('memberInfo', () => {
     const changeMember = ref([])
     const originMember = ref([])
+
+    const { searchInfo } = useSearchState()
+    // filterMember by searchState
+    const filterFamilyMember = computed(() => {
+        return changeMember.value.filter((member) => {
+            if (member.name.toUpperCase().indexOf(searchInfo.inputName.toUpperCase()) === -1) {
+                return false
+            }
+
+            if (searchInfo.selectGender !== -1 && member.gender !== searchInfo.selectGender) {
+                return false
+            }
+
+            if (searchInfo.selectComparisonOperator !== "no" && searchInfo.inputAge !== "") {
+                switch (searchInfo.selectComparisonOperator) {
+                    case "greater":
+                        return member.age > searchInfo.inputAge
+                    case "less":
+                        return member.age < searchInfo.inputAge
+                    case "equal":
+                        return member.age === searchInfo.inputAge
+                    case "greaterOrEqual":
+                        return member.age >= searchInfo.inputAge
+                    case "lessOrEqual":
+                        return member.age <= searchInfo.inputAge
+                }
+            }
+
+            return true
+        });
+    });
+
     const setMember = async () => {
         try {
             const data = await useGetApiResult("members", "readPiPiMembers")
@@ -30,7 +62,13 @@ export const useStore = defineStore('memberInfo', () => {
             useResultSwal({ title: "Reading members failed", icon: "error" })
         }
     }
-    return { changeMember, originMember, setMember }
+
+    return {
+        changeMember,
+        originMember,
+        filterFamilyMember,
+        setMember
+    }
 })
 
 export const useLoadingState = defineStore("loadingState", () => {

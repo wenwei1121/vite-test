@@ -1,138 +1,27 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { toRefs } from "vue"
 // component
-import GenderInput from "@/components/GenderInput.vue";
+import GenderInput from "@/components/GenderInput.vue"
 // pinia
-import { storeToRefs } from "pinia";
-import { useStore, useLoadingState, useSearchState } from "@/store/store.js";
+import { storeToRefs } from "pinia"
+import { useStore, useLoadingState } from "@/store/store.js"
 // composables
-import { useComfirmSwal, useResultSwal } from "@/composables/useAlert";
-import { useCheckInputAction } from "@/composables/useCheck";
+import { useMemberAction } from "@/composables/useApiMemberActions"
 // directives
-import { vNumOnly } from "@/directives/useDealInput";
-import { useGetApiResult } from "@/composables/useApi";
+import { vNumOnly } from "@/directives/useDealInput"
 
-const { setMember } = useStore();
-setMember();
-const { changeMember, originMember } = storeToRefs(useStore());
-
-const { changeLoadingState } = useLoadingState();
-const { loadingState } = storeToRefs(useLoadingState());
-
-const { searchInfo } = useSearchState();
-
-// filterMember by searchState
-const filterFamilyMember = computed(() => {
-  return changeMember.value.filter((member) => {
-    if (member.name.toUpperCase().indexOf(searchInfo.inputName.toUpperCase()) === -1) {
-      return false;
-    }
-
-    if (searchInfo.selectGender !== -1 && member.gender !== searchInfo.selectGender) {
-      return false;
-    }
-
-    if (searchInfo.selectComparisonOperator !== "no" && searchInfo.inputAge !== "") {
-      switch (searchInfo.selectComparisonOperator) {
-        case "greater":
-          return member.age > searchInfo.inputAge;
-        case "less":
-          return member.age < searchInfo.inputAge;
-        case "equal":
-          return member.age === searchInfo.inputAge;
-        case "greaterOrEqual":
-          return member.age >= searchInfo.inputAge;
-        case "lessOrEqual":
-          return member.age <= searchInfo.inputAge;
-      }
-    }
-
-    return true;
-  });
-});
-
-// table header name
-const userTableInfo = ["Name", "Age", "Gender", "Action"];
-
-// table user gender input
-const genderInfo = reactive([
-  {
-    genderText: "female",
-    genderValue: 0,
-  },
-  {
-    genderText: "male",
-    genderValue: 1,
-  },
-]);
-
-// edit button
-const editMember = (member) => {
-  // 傳物件進來 還是 proxy 物件的資料 但如果傳進來是 物件裡的屬性 只會有值 就會失去反應性
-  changeMember.value.forEach((member) => {
-    member.isEditting = false;
-  });
-  member.isEditting = true;
-};
-
-// save button
-const updateMember = async (member) => {
-  const { isEditting, ...other } = member;
-
-  const errMsg = useCheckInputAction(member);
-  if (errMsg) {
-    useResultSwal({ title: errMsg, icon: "error" });
-    return;
-  }
-
-  try {
-    changeLoadingState(1);
-    const data = await useGetApiResult("/members", "updatePiPiMembers", other);
-    if (data.status === "ok") {
-      await setMember();
-      useResultSwal({ title: "update success" });
-    } else {
-      useResultSwal({ title: "update failed", icon: "error" });
-    }
-  } catch (err) {
-    useResultSwal({ title: "update failed", icon: "error" });
-  } finally {
-    changeLoadingState(0);
-  }
-};
-
-// cancel button
-const cancelEdit = (member) => {
-  // 賦值可以因為不會影響到畫面, 但要被改變值就會失去反應性
-  const { id, ...other } = originMember.value.find(
-    (oMembewr) => oMembewr.id === member.id
-  );
-  Object.assign(member, other);
-};
-
-// delete button
-const deleteMember = async (member) => {
-  const confirmResult = await useComfirmSwal({
-    title: `sure to delete ${member.name} member ?`,
-  });
-  if (!confirmResult) return;
-  try {
-    changeLoadingState(1);
-    const data = await useGetApiResult("/members", "deletePiPiMembers", { id: member.id });
-    if (data.status === "ok") {
-      changeMember.value = changeMember.value.filter(
-        (changeMember) => changeMember.id !== member.id
-      );
-      useResultSwal({ title: "delete success" });
-    } else {
-      useResultSwal({ title: "delete failed", icon: "error" });
-    }
-  } catch (error) {
-    useResultSwal({ title: "delete failed", icon: "error" });
-  } finally {
-    changeLoadingState(0);
-  }
-};
+const { loadingState } = storeToRefs(useLoadingState())
+const { setMember } = useStore()
+const { filterFamilyMember } = toRefs(useStore())
+setMember()
+const {
+  genderInfo,
+  updateMember,
+  deleteMember,
+  editMember,
+  cancelEdit
+} = useMemberAction()
+const userTableInfo = ["Name", "Age", "Gender", "Action"]
 </script>
 
 <template>
@@ -208,7 +97,7 @@ const deleteMember = async (member) => {
                 <button
                   class="button is-danger is-outlined is-clickable"
                   :class="[loadingState ? 'is-loading' : '']"
-                  @click="deleteMember(member.id)"
+                  @click="deleteMember(member)"
                 >
                   Delete
                 </button>
