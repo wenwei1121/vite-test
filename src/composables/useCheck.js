@@ -4,7 +4,7 @@ import { useStore } from '@/store/store.js'
 
 const { changeMember } = storeToRefs(useStore())
 
-export const CheckInputAction = (memberInfo) => {
+export const useCheckInputAction = (memberInfo) => {
     const { id = 0, name, age } = memberInfo
 
     if (!name) {

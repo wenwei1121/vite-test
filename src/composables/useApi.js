@@ -1,4 +1,4 @@
-export const getApiResult = async (url, moduleName, parameter = {}) => {
+export const useGetApiResult = async (url, moduleName, parameter = {}) => {
     const body = JSON.stringify({ moduleName, parameter })
     const baseURL = "http://localhost:3030/pipi/"
     const result = await fetch(baseURL + url, {

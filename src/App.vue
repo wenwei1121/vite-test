@@ -9,16 +9,9 @@
   const { currentPath } = storeToRefs(useCurrentPath())
 
   const pathInfos = reactive([
-    {
-      path: "/",
-      tabName: "SHOW MEMBER"
-    },
-    {
-      path: "/AddPipiFamilyMember",
-      tabName: "ADD MEMBER"
-    }
+    { path: "/", tabName: "SHOW MEMBER" },
+    { path: "/AddPipiFamilyMember", tabName: "ADD MEMBER" }
   ])
-
 </script>
 
 <template>

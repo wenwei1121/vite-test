@@ -1,26 +1,37 @@
 import Swal from 'sweetalert2'
 
-export const comfirmSwal = async (title, icon) => {
+export const useComfirmSwal = async (options = {}) => {
+    const {
+        title = "sure to save?",
+        icon = "warning",
+        showCancelButton = true,
+        confirmButtonText = "Yes"
+    } = options
 
     const res = await Swal.fire({
-        title: title,
-        icon: icon,
-        showCancelButton: true,
+        title,
+        icon,
+        showCancelButton,
+        confirmButtonText,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
     })
 
     return res.isConfirmed
 }
 
-export const resultSwal = (msg, icon) => {
+export const useResultSwal = (options = {}) => {
+    const {
+        title = "save success!",
+        icon = "success",
+        showConfirmButton = false,
+        timer = 1500
+    } = options
 
     Swal.fire({
-        title: msg,
-        icon: icon,
-        showConfirmButton: false,
-        timer: 1500
+        title,
+        icon,
+        showConfirmButton,
+        timer
     })
-
 }

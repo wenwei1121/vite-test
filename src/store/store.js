@@ -2,8 +2,8 @@ import { ref, computed, reactive } from 'vue';
 // pinia
 import { defineStore } from 'pinia'
 // composables
-import { resultSwal } from '@/composables/useAlert'
-import { getApiResult } from '@/composables/useApiResult'
+import { useResultSwal } from '@/composables/useAlert'
+import { useGetApiResult } from '@/composables/useApi'
 // vueuse
 import { useCloned } from '@vueuse/core' 
 
@@ -22,12 +22,12 @@ export const useStore = defineStore('memberInfo', () => {
     const originMember = ref([])
     const setMember = async () => {
         try {
-            const data = await getApiResult("members", "readPiPiMembers")
+            const data = await useGetApiResult("members", "readPiPiMembers")
             changeMember.value = [...data]
             const { cloned: clonedData } = useCloned(data)
             originMember.value = clonedData.value
         } catch (err) {
-            resultSwal("Reading members failed", "error")
+            useResultSwal({ title: "Reading members failed", icon: "error" })
         }
     }
     return { changeMember, originMember, setMember }
