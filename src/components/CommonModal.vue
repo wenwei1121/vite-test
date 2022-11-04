@@ -1,7 +1,7 @@
 <script setup>
 // pinia
-import { storeToRefs } from "pinia";
-import { useLoadingState } from "@/store/store.js";
+import { storeToRefs } from "pinia"
+import { useLoadingState } from "@/store/store.js"
 // headlessui
 import {
   Dialog,
@@ -9,21 +9,35 @@ import {
   DialogTitle,
   TransitionChild,
   TransitionRoot,
-} from "@headlessui/vue";
+} from "@headlessui/vue"
 
-const { loadingState } = storeToRefs(useLoadingState());
+const { loadingState } = storeToRefs(useLoadingState())
 
-const props = defineProps(["isOpen", "name"]);
-const emits = defineEmits(["update:isOpen", "update:name", "save"]);
+const props = defineProps({
+  isOpen: {
+    type: Boolean
+  },
+  name: {
+    type: String,
+    default: ""
+  }
+})
+const emits = defineEmits(["update:isOpen", "update:name", "save"])
 
 const setIsOpen = (value) => {
-  emits("update:isOpen", value);
-};
+  emits("update:isOpen", value)
+}
 </script>
 
 <template>
-  <TransitionRoot appear :show="props.isOpen">
-    <Dialog @close="setIsOpen" class="relative z-50">
+  <TransitionRoot
+    appear
+    :show="props.isOpen"
+  >
+    <Dialog
+      class="relative z-50"
+      @close="setIsOpen"
+    >
       <TransitionChild
         enter="duration-300 ease-out"
         enter-from="opacity-0"
@@ -33,7 +47,10 @@ const setIsOpen = (value) => {
         leave-to="opacity-0"
       >
         <!-- The backdrop, rendered as a fixed sibling to the panel container -->
-        <div class="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div
+          class="fixed inset-0 bg-black/30"
+          aria-hidden="true"
+        ></div>
       </TransitionChild>
 
       <!-- Full-screen container to center the panel -->
@@ -50,9 +67,9 @@ const setIsOpen = (value) => {
           <DialogPanel
             class="w-full max-w-sm rounded bg-gray-800 text-gray-100 p-5 lg:p-7"
           >
-            <DialogTitle class="text-2xl lg:text-3xl text-center">{{
-              "Add New Favorite"
-            }}</DialogTitle>
+            <DialogTitle class="text-2xl lg:text-3xl text-center">
+              {{ "Add New Favorite" }}
+            </DialogTitle>
 
             <div class="mt-3 mb-6">
               <label class="flex flex-col gap-y-1">
@@ -73,7 +90,10 @@ const setIsOpen = (value) => {
               >
                 Save
               </button>
-              <button class="inline-flex text-white py-1" @click="setIsOpen(false)">
+              <button
+                class="inline-flex text-white py-1"
+                @click="setIsOpen(false)"
+              >
                 Cancel
               </button>
             </div>

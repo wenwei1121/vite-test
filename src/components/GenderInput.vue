@@ -1,30 +1,41 @@
 <script setup>
 // vueuse
-import { useVModel } from "@vueuse/core";
+import { useVModel } from "@vueuse/core"
 // headlessui
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue"
 // heroIcon
-import { CheckIcon } from "@heroicons/vue/20/solid";
+import { CheckIcon } from "@heroicons/vue/20/solid"
 
-const props = defineProps(["genderValue", "radioItems"]);
-const emits = defineEmits(["update:genderValue"]);
+const props = defineProps({
+  genderValue: {
+    type: Number,
+    default: 0
+  },
+  radioItems: {
+    type: Array,
+    default: () => []
+  }
+})
+const emits = defineEmits(["update:genderValue"])
 
 // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref)
-const useVModelGenderValue = useVModel(props, "genderValue", emits);
+const useVModelGenderValue = useVModel(props, "genderValue", emits)
 </script>
 
 <template>
   <div class="w-full px-4 py-16">
     <div class="mx-auto w-full max-w-md">
       <RadioGroup v-model="useVModelGenderValue">
-        <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
+        <RadioGroupLabel class="sr-only">
+          Server size
+        </RadioGroupLabel>
         <div class="space-y-2">
           <RadioGroupOption
-            as="template"
             v-for="plan in props.radioItems"
             :key="plan.genderText"
-            :value="plan.genderValue"
             v-slot="{ active, checked }"
+            :value="plan.genderValue"
+            as="template"
           >
             <div
               :class="[
@@ -42,11 +53,15 @@ const useVModelGenderValue = useVModel(props, "genderValue", emits);
                       as="p"
                       :class="checked ? 'text-white' : 'text-gray-900'"
                       class="font-medium"
-                      >{{ plan.genderText }}
+                    >
+                      {{ plan.genderText }}
                     </RadioGroupLabel>
                   </div>
                 </div>
-                <CheckIcon v-show="checked" class="w-5 h-5" />
+                <CheckIcon
+                  v-show="checked" 
+                  class="w-5 h-5"
+                />
               </div>
             </div>
           </RadioGroupOption>

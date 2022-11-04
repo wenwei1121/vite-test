@@ -1,16 +1,16 @@
 <script setup>
 // components
-import FavoriteSearch from "./FavoriteSearch.vue";
-import GenderInput from "./GenderInput.vue";
-import Select from "./Select.vue";
+import FavoriteSearch from "./FavoriteSearch.vue"
+import GenderInput from "./GenderInput.vue"
+import CommonSelectInput from "./CommonSelectInput.vue"
 // pinia
-import { useSearchState } from "@/store/store";
+import { useSearchState } from "@/store/store"
 // directives
-import { vFocus, vNumOnly } from "@/directives/useDealInput";
+import { vFocus, vNumOnly } from "@/directives/useDealInput"
 // heroIcon
-import { ArrowPathIcon } from "@heroicons/vue/24/solid";
+import { ArrowPathIcon } from "@heroicons/vue/24/solid"
 
-const { searchInfo, resetSearchInfo } = useSearchState();
+const { searchInfo, resetSearchInfo } = useSearchState()
 
 const operatorKind = [
   { text: "no select", value: "no" },
@@ -19,13 +19,13 @@ const operatorKind = [
   { text: "=", value: "equal" },
   { text: ">=", value: "greaterOrEqual" },
   { text: "<=", value: "lessOrEqual" },
-];
+]
 
 const genderInfo = [
   { genderText: "all select", genderValue: -1 },
   { genderText: "female", genderValue: 0 },
   { genderText: "male", genderValue: 1 },
-];
+]
 </script>
 
 <template>
@@ -33,28 +33,28 @@ const genderInfo = [
     <div class="column is-half is-offset-one-quarter control">
       <div>
         <input
-          v-focus
           v-model="searchInfo.inputName"
+          v-focus
           class="input is-large"
           type="text"
           placeholder="Search Name"
         />
       </div>
-      <Select
+      <CommonSelectInput
         v-model:selectTarget="searchInfo.selectComparisonOperator"
-        :selectItems="operatorKind"
+        :select-items="operatorKind"
       />
       <div class="column is-2">
         <input
-          v-num-only
           v-model.number="searchInfo.inputAge"
+          v-num-only
           class="input is-small"
           type="number"
         />
       </div>
       <GenderInput
         v-model:genderValue="searchInfo.selectGender"
-        :radioItems="genderInfo"
+        :radio-items="genderInfo"
       />
       <div class="flex gap-x-2">
         <ArrowPathIcon

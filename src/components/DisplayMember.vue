@@ -1,27 +1,27 @@
 <script setup>
-import { toRefs } from "vue";
+import { toRefs } from "vue"
 // component
-import GenderInput from "@/components/GenderInput.vue";
+import GenderInput from "@/components/GenderInput.vue"
 // pinia
-import { storeToRefs } from "pinia";
-import { useStore, useLoadingState } from "@/store/store.js";
+import { storeToRefs } from "pinia"
+import { useStore, useLoadingState } from "@/store/store.js"
 // composables
-import { useMemberActions } from "@/composables/useApiMemberActions";
+import { useMemberActions } from "@/composables/useApiMemberActions"
 // directives
-import { vNumOnly } from "@/directives/useDealInput";
+import { vNumOnly } from "@/directives/useDealInput"
 
-const { loadingState } = storeToRefs(useLoadingState());
-const { setMember } = useStore();
-const { filterFamilyMember } = toRefs(useStore());
-setMember();
+const { loadingState } = storeToRefs(useLoadingState())
+const { setMember } = useStore()
+const { filterFamilyMember } = toRefs(useStore())
+setMember()
 const {
   genderInfo,
   updateMember,
   deleteMember,
   editMember,
   cancelEdit,
-} = useMemberActions();
-const userTableInfo = ["Name", "Age", "Gender", "Action"];
+} = useMemberActions()
+const userTableInfo = ["Name", "Age", "Gender", "Action"]
 </script>
 
 <template>
@@ -30,49 +30,80 @@ const userTableInfo = ["Name", "Age", "Gender", "Action"];
       <table class="table is-hoverable is-fullwidth is-bordered is-striped">
         <thead>
           <tr>
-            <th v-for="tableName of userTableInfo" class="is-size-4">{{ tableName }}</th>
+            <th
+              v-for="tableName of userTableInfo"
+              :key="tableName"
+              class="is-size-4"
+            >
+              {{ tableName }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="member of filterFamilyMember" :key="member.id">
+          <tr
+            v-for="member of filterFamilyMember"
+            :key="member.id"
+          >
             <th>
-              <div class="is-size-5" v-show="!member.isEditting">{{ member.name }}</div>
-              <div class="columns field is-grouped" v-show="member.isEditting">
+              <div
+                v-show="!member.isEditting"
+                class="is-size-5"
+              >
+                {{ member.name }}
+              </div>
+              <div
+                v-show="member.isEditting"
+                class="columns field is-grouped"
+              >
                 <p class="column control">
                   <input
+                    v-model.trim="member.name"
                     class="input is-medium"
                     type="text"
                     placeholder="Search Name"
-                    v-model.trim="member.name"
                   />
                 </p>
               </div>
             </th>
             <td>
-              <div class="is-size-5" v-show="!member.isEditting">{{ member.age }}</div>
-              <div class="columns field is-grouped" v-show="member.isEditting">
+              <div
+                v-show="!member.isEditting"
+                class="is-size-5"
+              >
+                {{ member.age }}
+              </div>
+              <div
+                v-show="member.isEditting"
+                class="columns field is-grouped"
+              >
                 <p class="column control">
                   <input
+                    v-model.number="member.age"
+                    v-num-only
                     class="input is-medium"
                     type="number"
-                    v-num-only
-                    v-model.number="member.age"
                   />
                 </p>
               </div>
             </td>
             <td>
-              <div class="is-size-5" v-show="!member.isEditting">
+              <div
+                v-show="!member.isEditting"
+                class="is-size-5"
+              >
                 {{ member.gender ? "male" : "female" }}
               </div>
               <GenderInput
                 v-show="member.isEditting"
                 v-model:genderValue="member.gender"
-                :radioItems="genderInfo"
+                :radio-items="genderInfo"
               />
             </td>
             <td>
-              <div class="buttons" v-show="!member.isEditting">
+              <div
+                v-show="!member.isEditting"
+                class="buttons"
+              >
                 <button
                   class="button is-info is-outlined is-clickable"
                   @click="editMember(member)"
@@ -80,7 +111,10 @@ const userTableInfo = ["Name", "Age", "Gender", "Action"];
                   Edit
                 </button>
               </div>
-              <div class="buttons" v-show="member.isEditting">
+              <div
+                v-show="member.isEditting"
+                class="buttons"
+              >
                 <button
                   class="button is-info is-outlined is-clickable"
                   :class="[loadingState ? 'is-loading' : '']"

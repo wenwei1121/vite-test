@@ -1,12 +1,12 @@
 <script setup>
 // components
-import DisplayMember from "@/components/DisplayMember.vue";
-import SearchInput from "@/components/searchInput.vue";
+import DisplayMember from "@/components/DisplayMember.vue"
+import SearchInput from "@/components/searchInput.vue"
 // pinia
-import { useCurrentPath } from "@/store/store";
+import { useCurrentPath } from "@/store/store"
 
-const { setCurrentPath } = useCurrentPath();
-setCurrentPath("/");
+const { setCurrentPath } = useCurrentPath()
+setCurrentPath("/")
 </script>
 
 <template>
@@ -14,4 +14,6 @@ setCurrentPath("/");
   <DisplayMember />
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

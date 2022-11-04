@@ -50,9 +50,10 @@ export const useMemberActions = () => {
   const { setMember } = useStore()
   // updateMember
   const updateMember = async (member) => {
+    // eslint-disable-next-line no-unused-vars
     const { isEditting, ...other } = member
 
-    const errMsg = useCheckInputAction(member)
+    const errMsg = useCheckInputAction(changeMember, member)
     if (errMsg) {
       useResultSwal({ title: errMsg, icon: "error" })
       return
@@ -111,6 +112,7 @@ export const useMemberActions = () => {
   // cancelMember
   const cancelEdit = (member) => {
     // reactive can't reassign value 不能直接重新賦值
+    // eslint-disable-next-line no-unused-vars
     const { id, ...other } = originMember.value.find(
       ({ id }) => id === member.id
     )

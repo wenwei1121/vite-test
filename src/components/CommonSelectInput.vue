@@ -1,22 +1,30 @@
 <script setup>
-import { computed } from "vue";
+import { computed } from "vue"
 // vueuse
-import { useVModel } from "@vueuse/core";
+import { useVModel } from "@vueuse/core"
 // headlessui
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue"
 // heroIcon
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid"
 
-const props = defineProps(["selectTarget", "selectItems"]);
-const emits = defineEmits(["update:selectTarget"]);
+const props = defineProps({
+  selectTarget: {
+    type: String,
+    default: "",
+  },
+  selectItems: {
+    type: Array,
+    default: () => []
+  }
+})
+const emits = defineEmits(["update:selectTarget"])
 
 // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref) 賦予的變數需要 .value
-const useVModelSelectTarget = useVModel(props, "selectTarget", emits);
+const useVModelSelectTarget = useVModel(props, "selectTarget", emits)
 
 const selectTargetText = computed(() => {
-  return props.selectItems.find(({ value }) => value === useVModelSelectTarget.value)
-    .text;
-});
+  return props.selectItems.find(({ value }) => value === useVModelSelectTarget.value).text
+})
 </script>
 <template>
   <Listbox v-model="useVModelSelectTarget">
@@ -41,8 +49,8 @@ const selectTargetText = computed(() => {
           class="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         >
           <ListboxOption
+            v-for="person of props.selectItems"
             v-slot="{ active, selected }"
-            v-for="person in props.selectItems"
             :key="person.text"
             :value="person.value"
             as="template"
@@ -53,8 +61,8 @@ const selectTargetText = computed(() => {
                 'relative cursor-default select-none py-2 pl-10 pr-4',
               ]"
             >
-              <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']"
-                >{{ person.text }}
+              <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']">
+                {{ person.text }}
               </span>
               <span
                 v-if="selected"
