@@ -1,11 +1,11 @@
 <script setup>
   // components
-  import Modal from "./modal.vue";
+  import Modal from "./modal.vue"
   // headlessui
-  import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
+  import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue"
   // heroIcons
-  import { HeartIcon, PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/solid";
-  import { useFavoriteSearchActions } from "../composables/useApiFavoriteSearchActions";
+  import { HeartIcon, PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/solid"
+  import { useFavoriteSearchActions } from "../composables/useApiFavoriteSearchActions"
 
   const {
     favorites,

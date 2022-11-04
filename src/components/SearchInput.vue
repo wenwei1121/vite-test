@@ -1,33 +1,31 @@
 <script setup>
-  import { reactive } from "vue"
-  // components
-  import FavoriteSearch from "./FavoriteSearch.vue"
-  import GenderInput from "./GenderInput.vue";
-  import Select from "./Select.vue"
-  // pinia
-  import { useSearchState } from "@/store/store"
-  // directives
-  import { vFocus, vNumOnly } from '@/directives/useDealInput';
-  // heroIcon
-  import { ArrowPathIcon } from "@heroicons/vue/24/solid"
+// components
+import FavoriteSearch from "./FavoriteSearch.vue";
+import GenderInput from "./GenderInput.vue";
+import Select from "./Select.vue";
+// pinia
+import { useSearchState } from "@/store/store";
+// directives
+import { vFocus, vNumOnly } from "@/directives/useDealInput";
+// heroIcon
+import { ArrowPathIcon } from "@heroicons/vue/24/solid";
 
-  const { searchInfo, resetSearchInfo } = useSearchState()
+const { searchInfo, resetSearchInfo } = useSearchState();
 
-  const operatorKind = [
-    { text: "no select", value: "no" },
-    { text: ">", value: "greater" },
-    { text: "<", value: "less" },
-    { text: "=", value: "equal" },
-    { text: ">=", value: "greaterOrEqual" },
-    { text: "<=", value: "lessOrEqual" }
-  ]
+const operatorKind = [
+  { text: "no select", value: "no" },
+  { text: ">", value: "greater" },
+  { text: "<", value: "less" },
+  { text: "=", value: "equal" },
+  { text: ">=", value: "greaterOrEqual" },
+  { text: "<=", value: "lessOrEqual" },
+];
 
-  const genderInfo = [
-    { genderText: "all select", genderValue: -1 },
-    { genderText: "female", genderValue: 0 },
-    { genderText: "male", genderValue: 1 }
-  ]
-
+const genderInfo = [
+  { genderText: "all select", genderValue: -1 },
+  { genderText: "female", genderValue: 0 },
+  { genderText: "male", genderValue: 1 },
+];
 </script>
 
 <template>
@@ -40,7 +38,7 @@
           class="input is-large"
           type="text"
           placeholder="Search Name"
-        >
+        />
       </div>
       <Select
         v-model:selectTarget="searchInfo.selectComparisonOperator"
@@ -52,7 +50,7 @@
           v-model.number="searchInfo.inputAge"
           class="input is-small"
           type="number"
-        >
+        />
       </div>
       <GenderInput
         v-model:genderValue="searchInfo.selectGender"
@@ -69,6 +67,4 @@
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

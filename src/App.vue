@@ -1,17 +1,17 @@
 <script setup>
-  import { reactive } from 'vue';
-  // router
-  import { RouterLink, RouterView } from 'vue-router'
-  // pinia
-  import { storeToRefs } from 'pinia';
-  import { useCurrentPath } from '@/store/store.js';
-  
-  const { currentPath } = storeToRefs(useCurrentPath())
+import { reactive } from "vue";
+// router
+import { RouterLink, RouterView } from "vue-router";
+// pinia
+import { storeToRefs } from "pinia";
+import { useCurrentPath } from "@/store/store.js";
 
-  const pathInfos = reactive([
-    { path: "/", tabName: "SHOW MEMBER" },
-    { path: "/AddPipiFamilyMember", tabName: "ADD MEMBER" }
-  ])
+const { currentPath } = storeToRefs(useCurrentPath());
+
+const pathInfos = reactive([
+  { path: "/", tabName: "SHOW MEMBER" },
+  { path: "/AddPipiFamilyMember", tabName: "ADD MEMBER" },
+]);
 </script>
 
 <template>
@@ -22,7 +22,7 @@
         :key="pathItem.path"
         :class="[currentPath === pathItem.path ? 'is-active' : '']"
       >
-        <RouterLink :to=pathItem.path>
+        <RouterLink :to="pathItem.path">
           <span>{{ pathItem.tabName }}</span>
         </RouterLink>
       </li>
@@ -32,5 +32,5 @@
 </template>
 
 <style>
-  @import 'bulma/css/bulma.min.css';
+@import "bulma/css/bulma.min.css";
 </style>

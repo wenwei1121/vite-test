@@ -1,29 +1,18 @@
 // pinia
-import { storeToRefs } from 'pinia'
-import { useStore } from '@/store/store.js'
+export const useCheckInputAction = (checkArr, memberInfo) => {
+  const { id = 0, name, age = 0 } = memberInfo
 
-const { changeMember } = storeToRefs(useStore())
+  if (!name) return "Have empty name"
 
-export const useCheckInputAction = (memberInfo) => {
-    const { id = 0, name, age } = memberInfo
+  if (age === "") return "Have empty age"
 
-    if (!name) {
-        return "Have empty name"
+  const haveSameName = checkArr.value.some(
+    ({ id: memberId, name: memberName }) => {
+      if (memberId === id) return ""
+      return memberName === name
     }
-  
-    if (age === "") {
-        return "Have empty age"
-    }
-  
-    const haveSameName = changeMember.value.some(member => {
-        if (member.id === id) {
-            return ""
-        }
-        return member.name === name
-    })
-    if (haveSameName) {
-        return "Have same name"
-    }
+  )
+  if (haveSameName) return "Have same name"
 
-    return ""
+  return ""
 }

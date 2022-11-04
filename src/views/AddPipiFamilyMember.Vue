@@ -1,19 +1,19 @@
 <script setup>
 // component
-import GenderInput from "@/components/GenderInput.vue"
+import GenderInput from "@/components/GenderInput.vue";
 // pinia
-import { storeToRefs } from "pinia"
-import { useCurrentPath, useLoadingState } from "@/store/store.js"
+import { storeToRefs } from "pinia";
+import { useCurrentPath, useLoadingState } from "@/store/store.js";
 // composables
-import { useMemberAction } from "@/composables/useApiMemberActions"
+import { useMemberActions } from "@/composables/useApiMemberActions";
 // directives
-import { vFocus, vNumOnly } from "@/directives/useDealInput"
+import { vFocus, vNumOnly } from "@/directives/useDealInput";
 
-const { setCurrentPath } = useCurrentPath()
-setCurrentPath("/AddPipiFamilyMember")
+const { setCurrentPath } = useCurrentPath();
+setCurrentPath("/AddPipiFamilyMember");
 
-const { loadingState } = storeToRefs(useLoadingState())
-const { genderInfo, addMemberInfo, addMember } = useMemberAction();
+const { loadingState } = storeToRefs(useLoadingState());
+const { genderInfo, addMemberInfo, addMember } = useMemberActions();
 </script>
 
 <template>
@@ -50,7 +50,9 @@ const { genderInfo, addMemberInfo, addMember } = useMemberAction();
             class="button is-link is-clickable is-size-5"
             :class="[loadingState ? 'is-loading' : '']"
             @click="addMember"
-          >Add</button>
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>

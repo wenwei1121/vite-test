@@ -1,85 +1,72 @@
 <script setup>
-  import { computed } from 'vue'
-  // vueuse
-  import { useVModel } from '@vueuse/core'
-  // headlessui
-  import {
-    Listbox,
-    ListboxButton,
-    ListboxOptions,
-    ListboxOption
-  } from '@headlessui/vue'
-  // heroIcon
-  import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid"
+import { computed } from "vue";
+// vueuse
+import { useVModel } from "@vueuse/core";
+// headlessui
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
+// heroIcon
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid";
 
-  const props = defineProps(["selectTarget", "selectItems"])
-  const emits = defineEmits(["update:selectTarget"])
+const props = defineProps(["selectTarget", "selectItems"]);
+const emits = defineEmits(["update:selectTarget"]);
 
-  // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref) 賦予的變數需要 .value
-  const useVModelSelectTarget = useVModel(props, "selectTarget", emits)
+// VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref) 賦予的變數需要 .value
+const useVModelSelectTarget = useVModel(props, "selectTarget", emits);
 
-  const selectTargetText = computed(() => {
-    return props.selectItems.find(({ value }) => value === useVModelSelectTarget.value).text
-  })
+const selectTargetText = computed(() => {
+  return props.selectItems.find(({ value }) => value === useVModelSelectTarget.value)
+    .text;
+});
 </script>
 <template>
-    <Listbox v-model="useVModelSelectTarget">
-      <div class="relative mt-1">
-        <ListboxButton
-          class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+  <Listbox v-model="useVModelSelectTarget">
+    <div class="relative mt-1">
+      <ListboxButton
+        class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+      >
+        <span class="block truncate">{{ selectTargetText }}</span>
+        <span
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
         >
-          <span class="block truncate">{{ selectTargetText }}</span>
-          <span
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
-          >
-            <ChevronUpDownIcon
-              class="h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            />
-          </span>
-        </ListboxButton>
+          <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+        </span>
+      </ListboxButton>
 
-        <transition
-          leave-active-class="transition duration-100 ease-in"
-          leave-from-class="opacity-100"
-          leave-to-class="opacity-0"
+      <transition
+        leave-active-class="transition duration-100 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <ListboxOptions
+          class="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         >
-          <ListboxOptions
-            class="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          <ListboxOption
+            v-slot="{ active, selected }"
+            v-for="person in props.selectItems"
+            :key="person.text"
+            :value="person.value"
+            as="template"
           >
-            <ListboxOption
-              v-slot="{ active, selected }"
-              v-for="person in props.selectItems"
-              :key="person.text"
-              :value="person.value"
-              as="template"
+            <li
+              :class="[
+                active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
+                'relative cursor-default select-none py-2 pl-10 pr-4',
+              ]"
             >
-              <li
-                :class="[
-                  active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                  'relative cursor-default select-none py-2 pl-10 pr-4',
-                ]"
+              <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']"
+                >{{ person.text }}
+              </span>
+              <span
+                v-if="selected"
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
               >
-                <span
-                  :class="[
-                    selected ? 'font-medium' : 'font-normal',
-                    'block truncate',
-                  ]"
-                  >{{ person.text }}
-                </span>
-                <span
-                  v-if="selected"
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
-                >
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span>
-              </li>
-            </ListboxOption>
-          </ListboxOptions>
-        </transition>
-      </div>
-    </Listbox>
+                <CheckIcon class="h-5 w-5" aria-hidden="true" />
+              </span>
+            </li>
+          </ListboxOption>
+        </ListboxOptions>
+      </transition>
+    </div>
+  </Listbox>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>
