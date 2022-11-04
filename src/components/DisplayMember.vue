@@ -1,27 +1,27 @@
 <script setup>
-import { toRefs } from "vue"
+import { toRefs } from "vue";
 // component
-import GenderInput from "@/components/GenderInput.vue"
+import GenderInput from "@/components/GenderInput.vue";
 // pinia
-import { storeToRefs } from "pinia"
-import { useStore, useLoadingState } from "@/store/store.js"
+import { storeToRefs } from "pinia";
+import { useStore, useLoadingState } from "@/store/store.js";
 // composables
-import { useMemberAction } from "@/composables/useApiMemberActions"
+import { useMemberActions } from "@/composables/useApiMemberActions";
 // directives
-import { vNumOnly } from "@/directives/useDealInput"
+import { vNumOnly } from "@/directives/useDealInput";
 
-const { loadingState } = storeToRefs(useLoadingState())
-const { setMember } = useStore()
-const { filterFamilyMember } = toRefs(useStore())
-setMember()
+const { loadingState } = storeToRefs(useLoadingState());
+const { setMember } = useStore();
+const { filterFamilyMember } = toRefs(useStore());
+setMember();
 const {
   genderInfo,
   updateMember,
   deleteMember,
   editMember,
-  cancelEdit
-} = useMemberAction()
-const userTableInfo = ["Name", "Age", "Gender", "Action"]
+  cancelEdit,
+} = useMemberActions();
+const userTableInfo = ["Name", "Age", "Gender", "Action"];
 </script>
 
 <template>

@@ -13,29 +13,20 @@
 
   const { searchInfo, resetSearchInfo } = useSearchState()
 
-  const operatorKind = reactive([
+  const operatorKind = [
     { text: "no select", value: "no" },
     { text: ">", value: "greater" },
     { text: "<", value: "less" },
     { text: "=", value: "equal" },
     { text: ">=", value: "greaterOrEqual" },
     { text: "<=", value: "lessOrEqual" }
-  ])
+  ]
 
-  const genderInfo = reactive([
-    {
-      genderText: "all select",
-      genderValue: -1
-    },
-    {
-      genderText: "female",
-      genderValue: 0
-    },
-    {
-      genderText: "male",
-      genderValue: 1
-    }
-  ])
+  const genderInfo = [
+    { genderText: "all select", genderValue: -1 },
+    { genderText: "female", genderValue: 0 },
+    { genderText: "male", genderValue: 1 }
+  ]
 
 </script>
 

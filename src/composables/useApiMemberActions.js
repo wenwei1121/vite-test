@@ -9,7 +9,7 @@ import { useComfirmSwal, useResultSwal } from "@/composables/useAlert"
 import { useGetApiResult } from "@/composables/useApi"
 import { useCheckInputAction } from "@/composables/useCheck"
 
-export const useMemberAction = () => {
+export const useMemberActions = () => {
     const { changeLoadingState } = useLoadingState()
     const addMemberInfo = ref({
         name: "",
