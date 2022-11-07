@@ -55,9 +55,19 @@
   </Popover>
   <CommonModal
     v-model:isOpen="isOpen"
-    v-model:name="favoriteName"
+    title="Add New Favorite"
     @save="addFavorite"
-  />
+  >
+    <template #modalBody>
+      <label class="flex flex-col gap-y-1">
+        <span>Name :</span>
+        <input
+          v-model.trim="favoriteName"
+          class="text-gray-800 rounded-sm outline-none px-2 py-1"
+        />
+      </label>
+    </template>
+  </CommonModal>
 </template>
 
 <style></style>

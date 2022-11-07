@@ -2,6 +2,8 @@
 // pinia
 import { storeToRefs } from "pinia"
 import { useLoadingState } from "@/store/store.js"
+// vueuse
+import { useVModel } from "@vueuse/core"
 // headlessui
 import {
   Dialog,
@@ -17,16 +19,13 @@ const props = defineProps({
   isOpen: {
     type: Boolean
   },
-  name: {
+  title: {
     type: String,
-    default: ""
+    default: "title"
   }
 })
-const emits = defineEmits(["update:isOpen", "update:name", "save"])
-
-const setIsOpen = (value) => {
-  emits("update:isOpen", value)
-}
+const emits = defineEmits(["update:isOpen", "save"])
+const useIsOpen = useVModel(props, "isOpen", emits)
 </script>
 
 <template>
@@ -36,7 +35,7 @@ const setIsOpen = (value) => {
   >
     <Dialog
       class="relative z-50"
-      @close="setIsOpen"
+      @close="useIsOpen = false"
     >
       <TransitionChild
         enter="duration-300 ease-out"
@@ -68,18 +67,11 @@ const setIsOpen = (value) => {
             class="w-full max-w-sm rounded bg-gray-800 text-gray-100 p-5 lg:p-7"
           >
             <DialogTitle class="text-2xl lg:text-3xl text-center">
-              {{ "Add New Favorite" }}
+              {{ title }}
             </DialogTitle>
 
             <div class="mt-3 mb-6">
-              <label class="flex flex-col gap-y-1">
-                <span>Name :</span>
-                <input
-                  class="text-gray-800 rounded-sm outline-none px-2 py-1"
-                  :value="name"
-                  @input="emits('update:name', $event.target.value)"
-                />
-              </label>
+              <slot name="modalBody"></slot>
             </div>
 
             <div class="flex justify-end gap-x-2">
@@ -92,7 +84,7 @@ const setIsOpen = (value) => {
               </button>
               <button
                 class="inline-flex text-white py-1"
-                @click="setIsOpen(false)"
+                @click="useIsOpen = false"
               >
                 Cancel
               </button>
