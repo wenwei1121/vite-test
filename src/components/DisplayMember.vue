@@ -16,6 +16,7 @@ const { setMember } = useStore()
 const { filterFamilyMember } = toRefs(useStore())
 setMember()
 const {
+  userTableInfo,
   genderInfo,
   isOpen,
   currentEditMember,

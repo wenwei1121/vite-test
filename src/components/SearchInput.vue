@@ -31,32 +31,35 @@ const genderInfo = [
 <template>
   <div class="columns field">
     <div class="column is-half is-offset-one-quarter control">
-      <div>
+      <div class="mx-auto mb-2 w-full max-w-md">
         <input
           v-model="searchInfo.inputName"
           v-focus
-          class="input is-large"
+          class="input is-normal"
           type="text"
           placeholder="Search Name"
         />
       </div>
-      <CommonSelectInput
-        v-model:selectTarget="searchInfo.selectComparisonOperator"
-        :select-items="operatorKind"
-      />
-      <div class="column is-2">
-        <input
-          v-model.number="searchInfo.inputAge"
-          v-num-only
-          class="input is-small"
-          type="number"
+      <div class="mx-auto mb-2 w-full max-w-md columns-2">
+        <CommonSelectInput
+          v-model:selectTarget="searchInfo.selectComparisonOperator"
+          :select-items="operatorKind"
         />
+        <div>
+          <input
+            v-model.number="searchInfo.inputAge"
+            v-num-only
+            class="input is-normal"
+            type="number"
+          />
+        </div>
       </div>
       <GenderInput
         v-model:genderValue="searchInfo.selectGender"
         :radio-items="genderInfo"
+        class="mb-2"
       />
-      <div class="flex gap-x-2">
+      <div class="mx-auto w-full max-w-md flex gap-x-2">
         <ArrowPathIcon
           class="cursor-pointer h-8 w-8 text-blue-400"
           @click="resetSearchInfo"
@@ -66,5 +69,4 @@ const genderInfo = [
     </div>
   </div>
 </template>
-
 <style scoped></style>

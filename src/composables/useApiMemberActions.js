@@ -107,7 +107,7 @@ export const useMemberActions = () => {
     id:"",
     name: "",
     age: 0,
-    gender: 0,
+    gender: 0
   })
   // editMember
   const editMember = (member) => {

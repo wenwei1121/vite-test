@@ -19,25 +19,25 @@ const { genderInfo, addMemberInfo, addMember } = useMemberActions()
 <template>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter control">
-      <div class="field">
-        <label class="label is-size-3">Name</label>
+      <div class="field mx-auto mb-2 w-full max-w-md">
+        <label class="label mb-0">Name</label>
         <div class="control">
           <input
             v-model.trim="addMemberInfo.name"
             v-focus
-            class="input is-large"
+            class="input is-normal"
             type="text"
             placeholder="Input Name"            
           />
         </div>
       </div>
-      <div class="field">
-        <label class="label is-size-3">Age</label>
+      <div class="field mx-auto mb-2 w-full max-w-md">
+        <label class="label mb-0">Age</label>
         <div class="control">
           <input
             v-model.number="addMemberInfo.age"
             v-num-only
-            class="input is-large"
+            class="input is-normal"
             type="number"
             placeholder="Input Age"
           />
@@ -46,11 +46,12 @@ const { genderInfo, addMemberInfo, addMember } = useMemberActions()
       <GenderInput
         v-model:genderValue="addMemberInfo.gender"
         :radio-items="genderInfo"
+        class="mb-2"
       />
-      <div class="field is-grouped">
+      <div class="field mx-auto mb-2 w-full max-w-md is-grouped">
         <div class="control">
           <button
-            class="button is-link is-clickable is-size-5"
+            class="button is-link is-clickable"
             :class="[loadingState ? 'is-loading' : '']"
             @click="addMember"
           >
