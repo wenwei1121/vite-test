@@ -70,7 +70,7 @@ const useIsOpen = useVModel(props, "isOpen", emits)
               {{ title }}
             </DialogTitle>
 
-            <div class="mt-3 mb-6">
+            <div class="mt-3 mb-5">
               <slot name="modalBody"></slot>
             </div>
 

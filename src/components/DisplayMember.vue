@@ -2,7 +2,7 @@
 import { toRefs } from "vue"
 // component
 import GenderInput from "@/components/GenderInput.vue"
-import CommonModal from "./CommonModal.vue"
+import CommonModal from "@/components/CommonModal.vue"
 // pinia
 import { storeToRefs } from "pinia"
 import { useStore, useLoadingState } from "@/store/store.js"
@@ -86,7 +86,7 @@ const {
         @save="updateMember(currentEditMember)"
       >
         <template #modalBody>
-          <label class="flex flex-col gap-y-1">
+          <label class="flex flex-col gap-y-1 mb-2">
             <span>Name :</span>
             <input
               v-model.trim="currentEditMember.name"
@@ -95,7 +95,7 @@ const {
               placeholder="Favorite Name"
             />
           </label>
-          <label class="flex flex-col gap-y-1">
+          <label class="flex flex-col gap-y-1 mb-2">
             <span>Age :</span>
             <input
               v-model.number="currentEditMember.age"
@@ -104,10 +104,13 @@ const {
               type="number"
             />
           </label>
-          <GenderInput
-            v-model:genderValue="currentEditMember.gender"
-            :radio-items="genderInfo"
-          />
+          <label class="flex flex-col gap-y-1">
+            <span>Gender :</span>
+            <GenderInput
+              v-model:genderValue="currentEditMember.gender"
+              :radio-items="genderInfo"
+            />
+          </label>
         </template>
       </CommonModal>
     </div>

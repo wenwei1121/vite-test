@@ -10,7 +10,7 @@ import { useGetApiResult } from "@/composables/useApi"
 import { useCheckInputAction } from "@/composables/useCheck"
 
 export const useMemberActions = () => {
-  const addMemberInfo = ref({
+  const addMemberInfo = reactive({
     name: "",
     age: 0,
     gender: 0,
@@ -28,7 +28,7 @@ export const useMemberActions = () => {
   const { changeMember } = storeToRefs(useStore())
   // addMember
   const addMember = async () => {
-    const errMsg = useCheckInputAction(changeMember, addMemberInfo.value)
+    const errMsg = useCheckInputAction(changeMember, addMemberInfo)
     if (errMsg) {
       useResultSwal({ title: errMsg, icon: "error" })
       return
@@ -39,7 +39,7 @@ export const useMemberActions = () => {
       const { message } = await useGetApiResult(
         "/members",
         "addPiPiMembers",
-        addMemberInfo.value
+        addMemberInfo
       )
       useResultSwal({ title: message })
       router.push({ path: "/" })
@@ -53,9 +53,6 @@ export const useMemberActions = () => {
   const { setMember } = useStore()
   // updateMember
   const updateMember = async (member) => {
-    // eslint-disable-next-line no-unused-vars
-    const { isEditting, ...other } = member
-
     const errMsg = useCheckInputAction(changeMember, member)
     if (errMsg) {
       useResultSwal({ title: errMsg, icon: "error" })
@@ -64,7 +61,7 @@ export const useMemberActions = () => {
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult("/members", "updatePiPiMembers", other)
+      const data = await useGetApiResult("/members", "updatePiPiMembers", member)
       if (data.status === "ok") {
         await setMember()
         useResultSwal({ title: "update success" })
@@ -88,9 +85,11 @@ export const useMemberActions = () => {
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult("/members", "deletePiPiMembers", {
-        id,
-      })
+      const data = await useGetApiResult(
+        "/members",
+        "deletePiPiMembers",
+        { id }
+      )
       if (data.status === "ok") {
         await setMember()
         useResultSwal({ title: "delete success" })

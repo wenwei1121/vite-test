@@ -1,11 +1,9 @@
-import { ref, shallowRef, computed, reactive } from "vue"
+import { ref, computed, reactive } from "vue"
 // pinia
 import { defineStore } from "pinia"
 // composables
 import { useResultSwal } from "@/composables/useAlert"
 import { useGetApiResult } from "@/composables/useApi"
-// vueuse
-import { useCloned } from "@vueuse/core"
 
 export const useCurrentPath = defineStore("currentPath", () => {
   const currentPath = ref("")
@@ -18,7 +16,6 @@ export const useCurrentPath = defineStore("currentPath", () => {
 })
 
 export const useStore = defineStore("memberInfo", () => {
-  let originMember = shallowRef([])
   const changeMember = ref([])
 
   const { searchInfo } = useSearchState()
@@ -63,15 +60,13 @@ export const useStore = defineStore("memberInfo", () => {
   const setMember = async () => {
     try {
       const data = await useGetApiResult("members", "readPiPiMembers")
-      originMember.value = data
-      changeMember.value = useCloned(originMember).cloned.value
+      changeMember.value = data
     } catch (err) {
       useResultSwal({ title: "Reading members failed", icon: "error" })
     }
   }
 
   return {
-    originMember,
     changeMember,
     filterFamilyMember,
     setMember,

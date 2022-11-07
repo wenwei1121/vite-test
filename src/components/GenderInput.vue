@@ -17,13 +17,12 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(["update:genderValue"])
-
 // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref)
 const useVModelGenderValue = useVModel(props, "genderValue", emits)
 </script>
 
 <template>
-  <div class="w-full px-4 py-16">
+  <div class="w-full">
     <div class="mx-auto w-full max-w-md">
       <RadioGroup v-model="useVModelGenderValue">
         <RadioGroupLabel class="sr-only">
