@@ -2,7 +2,7 @@ import { ref } from "vue"
 // pinia
 import { useLoadingState, useSearchState } from "@/store/store"
 // composables
-import { useComfirmSwal, useResultSwal } from "@/composables/useAlert"
+import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
 import { useGetApiResult } from "@/composables/useApi"
 import { useCheckInputAction } from "@/composables/useCheck"
 
@@ -63,7 +63,7 @@ export const useFavoriteSearchActions = () => {
   }
 
   const deleteFavorite = async ({ name, id }) => {
-    const check = await useComfirmSwal({
+    const check = await useConfirmSwal({
       title: `sure to delete ${name} favoriteItem ?`,
     })
     if (!check) return

@@ -5,7 +5,7 @@ import { useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { useStore, useLoadingState } from "@/store/store.js"
 // composables
-import { useComfirmSwal, useResultSwal } from "@/composables/useAlert"
+import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
 import { useGetApiResult } from "@/composables/useApi"
 import { useCheckInputAction } from "@/composables/useCheck"
 
@@ -78,7 +78,7 @@ export const useMemberActions = () => {
 
   // deleteMember
   const deleteMember = async ({ name, id }) => {
-    const confirmResult = await useComfirmSwal({
+    const confirmResult = await useConfirmSwal({
       title: `sure to delete ${name} member ?`,
     })
     if (!confirmResult) return

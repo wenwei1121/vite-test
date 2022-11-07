@@ -27,7 +27,7 @@ const { genderInfo, addMemberInfo, addMember } = useMemberActions()
             v-focus
             class="input is-normal"
             type="text"
-            placeholder="Input Name"            
+            placeholder="Input Name"
           />
         </div>
       </div>

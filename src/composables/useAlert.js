@@ -1,6 +1,6 @@
 import Swal from "sweetalert2"
 
-export const useComfirmSwal = async (options = {}) => {
+export const useConfirmSwal = async (options = {}) => {
   const {
     title = "sure to save?",
     icon = "warning",
