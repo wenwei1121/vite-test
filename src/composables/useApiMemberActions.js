@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 // vueRouter
 import { useRouter } from "vue-router"
 // pinia
@@ -19,10 +19,13 @@ export const useMemberActions = () => {
     { genderText: "female", genderValue: 0 },
     { genderText: "male", genderValue: 1 },
   ]
+  const userTableInfo = ["Name", "Age", "Gender", "Action"]
+
+  const isOpen = ref(false)
 
   const router = useRouter()
   const { changeLoadingState } = useLoadingState()
-  const { originMember, changeMember } = storeToRefs(useStore())
+  const { changeMember } = storeToRefs(useStore())
   // addMember
   const addMember = async () => {
     const errMsg = useCheckInputAction(changeMember, addMemberInfo.value)
@@ -65,6 +68,7 @@ export const useMemberActions = () => {
       if (data.status === "ok") {
         await setMember()
         useResultSwal({ title: "update success" })
+        isOpen.value = false
       } else {
         useResultSwal({ title: "update failed", icon: "error" })
       }
@@ -100,32 +104,30 @@ export const useMemberActions = () => {
     }
   }
 
+  const currentEditMember = reactive({
+    id:"",
+    name: "",
+    age: 0,
+    gender: 0,
+  })
   // editMember
   const editMember = (member) => {
-    // 傳物件進來 還是 proxy 物件的資料 但如果傳進來是 物件裡的屬性 只會有值 就會失去反應性
-    changeMember.value.forEach((changeMember) => {
-      changeMember.isEditting = false
-    })
-    member.isEditting = true
-  }
-
-  // cancelMember
-  const cancelEdit = (member) => {
-    // reactive can't reassign value 不能直接重新賦值
-    // eslint-disable-next-line no-unused-vars
-    const { id, ...other } = originMember.value.find(
-      ({ id }) => id === member.id
-    )
-    Object.assign(member, other)
+    currentEditMember.id = member.id
+    currentEditMember.name = member.name
+    currentEditMember.age = member.age
+    currentEditMember.gender = member.gender
+    isOpen.value = true
   }
 
   return {
-    addMemberInfo,
     genderInfo,
+    userTableInfo,
+    isOpen,
+    addMemberInfo,
+    currentEditMember,
     addMember,
-    updateMember,
-    deleteMember,
     editMember,
-    cancelEdit,
+    updateMember,
+    deleteMember
   }
 }

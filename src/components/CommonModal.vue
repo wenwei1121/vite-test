@@ -31,7 +31,7 @@ const useIsOpen = useVModel(props, "isOpen", emits)
 <template>
   <TransitionRoot
     appear
-    :show="props.isOpen"
+    :show="useIsOpen"
   >
     <Dialog
       class="relative z-50"

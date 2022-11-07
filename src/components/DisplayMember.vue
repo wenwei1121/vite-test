@@ -2,6 +2,7 @@
 import { toRefs } from "vue"
 // component
 import GenderInput from "@/components/GenderInput.vue"
+import CommonModal from "./CommonModal.vue"
 // pinia
 import { storeToRefs } from "pinia"
 import { useStore, useLoadingState } from "@/store/store.js"
@@ -16,12 +17,12 @@ const { filterFamilyMember } = toRefs(useStore())
 setMember()
 const {
   genderInfo,
-  updateMember,
-  deleteMember,
+  isOpen,
+  currentEditMember,
   editMember,
-  cancelEdit,
+  updateMember,
+  deleteMember
 } = useMemberActions()
-const userTableInfo = ["Name", "Age", "Gender", "Action"]
 </script>
 
 <template>
@@ -45,88 +46,27 @@ const userTableInfo = ["Name", "Age", "Gender", "Action"]
             :key="member.id"
           >
             <th>
-              <div
-                v-show="!member.isEditting"
-                class="is-size-5"
-              >
+              <div class="is-size-5">
                 {{ member.name }}
-              </div>
-              <div
-                v-show="member.isEditting"
-                class="columns field is-grouped"
-              >
-                <p class="column control">
-                  <input
-                    v-model.trim="member.name"
-                    class="input is-medium"
-                    type="text"
-                    placeholder="Search Name"
-                  />
-                </p>
               </div>
             </th>
             <td>
-              <div
-                v-show="!member.isEditting"
-                class="is-size-5"
-              >
+              <div class="is-size-5">
                 {{ member.age }}
               </div>
-              <div
-                v-show="member.isEditting"
-                class="columns field is-grouped"
-              >
-                <p class="column control">
-                  <input
-                    v-model.number="member.age"
-                    v-num-only
-                    class="input is-medium"
-                    type="number"
-                  />
-                </p>
-              </div>
             </td>
             <td>
-              <div
-                v-show="!member.isEditting"
-                class="is-size-5"
-              >
+              <div class="is-size-5">
                 {{ member.gender ? "male" : "female" }}
               </div>
-              <GenderInput
-                v-show="member.isEditting"
-                v-model:genderValue="member.gender"
-                :radio-items="genderInfo"
-              />
             </td>
             <td>
-              <div
-                v-show="!member.isEditting"
-                class="buttons"
-              >
+              <div class="buttons">
                 <button
                   class="button is-info is-outlined is-clickable"
                   @click="editMember(member)"
                 >
                   Edit
-                </button>
-              </div>
-              <div
-                v-show="member.isEditting"
-                class="buttons"
-              >
-                <button
-                  class="button is-info is-outlined is-clickable"
-                  :class="[loadingState ? 'is-loading' : '']"
-                  @click="updateMember(member)"
-                >
-                  Save
-                </button>
-                <button
-                  class="button is-outlined is-clickable"
-                  @click="cancelEdit(member)"
-                >
-                  Cancel
                 </button>
                 <button
                   class="button is-danger is-outlined is-clickable"
@@ -140,6 +80,36 @@ const userTableInfo = ["Name", "Age", "Gender", "Action"]
           </tr>
         </tbody>
       </table>
+      <CommonModal
+        v-model:isOpen="isOpen"
+        title="Edit Member"
+        @save="updateMember(currentEditMember)"
+      >
+        <template #modalBody>
+          <label class="flex flex-col gap-y-1">
+            <span>Name :</span>
+            <input
+              v-model.trim="currentEditMember.name"
+              class="text-gray-800 rounded-sm outline-none px-2 py-1 input is-medium"
+              type="text"
+              placeholder="Favorite Name"
+            />
+          </label>
+          <label class="flex flex-col gap-y-1">
+            <span>Age :</span>
+            <input
+              v-model.number="currentEditMember.age"
+              v-num-only
+              class="text-gray-800 rounded-sm outline-none px-2 py-1 input is-medium"
+              type="number"
+            />
+          </label>
+          <GenderInput
+            v-model:genderValue="currentEditMember.gender"
+            :radio-items="genderInfo"
+          />
+        </template>
+      </CommonModal>
     </div>
   </div>
 </template>
