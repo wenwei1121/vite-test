@@ -11,6 +11,11 @@ const routes = [
     name: "AddPipiFamilyMember",
     component: () => import("@/views/AddPipiFamilyMember.vue"),
   },
+  {
+    path: "/TestRedEnvelope",
+    name: "TestRedEnvelope",
+    component: () => import("@/views/TestRedEnvelope.vue"),
+  },
 ]
 
 const router = createRouter({

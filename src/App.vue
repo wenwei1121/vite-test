@@ -1,5 +1,4 @@
 <script setup>
-import { reactive } from "vue"
 // router
 import { RouterLink, RouterView } from "vue-router"
 // pinia
@@ -8,10 +7,11 @@ import { useCurrentPath } from "@/store/store.js"
 
 const { currentPath } = storeToRefs(useCurrentPath())
 
-const pathInfos = reactive([
+const pathInfos = [
   { path: "/", tabName: "SHOW MEMBER" },
   { path: "/AddPipiFamilyMember", tabName: "ADD MEMBER" },
-])
+  { path: "/TestRedEnvelope", tabName: "Play Drawer RedEnvelope" },
+]
 </script>
 
 <template>

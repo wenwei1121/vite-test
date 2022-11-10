@@ -1,7 +1,14 @@
 <script setup>
 import { ref, computed } from "vue"
+// pinia
+import { useCurrentPath } from "@/store/store.js"
+// composables
 import { useResultSwal } from "@/composables/useAlert"
+// vueuse
 import { useCloned } from "@vueuse/core"
+
+const { setCurrentPath } = useCurrentPath()
+setCurrentPath("/TestRedEnvelope")
 
 const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "sisterBoyfriend", "brother", "sun", "ning"]
 
