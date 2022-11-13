@@ -1,87 +1,59 @@
 <script setup>
-import { ref, computed } from "vue"
 // pinia
 import { useCurrentPath } from "@/store/store.js"
 // composables
-import { useResultSwal } from "@/composables/useAlert"
-// vueuse
-import { useCloned } from "@vueuse/core"
+import { usePlay } from "@/composables/usePlayRedEnvelope"
 
 const { setCurrentPath } = useCurrentPath()
 setCurrentPath("/TestRedEnvelope")
 
-const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "sisterBoyfriend", "brother", "sun", "ning"]
+const {
+  familyArr,
+  sortedArr,
+  randomSortFamilyMember,
+  prizes,
+  gameOverResult,
+  currentDrawer,
+  randomPrize
+} = usePlay()
 
-const sortedArr = ref([])
-const randomSortFamilyMember = () => {
-  sortedArr.value = []
-  const clonedFamilyArr = [...familyArr]
-  do {
-    const randomNum = getRandomNum(clonedFamilyArr)
-    sortedArr.value.push(clonedFamilyArr[randomNum])
-    clonedFamilyArr.splice(randomNum, 1)
-  } while (clonedFamilyArr.length !== 0)
-  prizes.value = useCloned(prizesSample).cloned.value
-  drawerNum.value = 0
-}
-
-const showPrize = ref({})
-const prizesSample = [
-  { id: 0, label: "A", money: 1200 },
-  { id: 1, label: "B", money: 800 },
-  { id: 2, label: "C", money: 600 },
-  { id: 3, label: "C", money: 600 },
-  { id: 4, label: "D", money: 200 },
-  { id: 5, label: "D", money: 200 },
-  { id: 6, label: "D", money: 200 },
-  { id: 7, label: "D", money: 200 },
-  { id: 8, label: "D", money: 200 },
-  { id: 9, label: "D", money: 200 },
-  { id: 10, label: "D", money: 200 },
-  { id: 11, label: "D", money: 200 },
-  { id: 12, label: "D", money: 200 },
-]
-
-const prizes = ref(useCloned(prizesSample).cloned.value)
-const randomPrize = () => {
-  if (prizes.value.length === 0) {
-    useResultSwal({
-      title: "獎已空",
-      icon: "error",
-      timer: 2000
-    })
-    return
-  }
-  const randomNum = getRandomNum(prizes.value)
-  showPrize.value = prizes.value[randomNum]
-  useResultSwal({
-    title: `恭喜抽中${showPrize.value.label}賞 獎金: ${showPrize.value.money}`,
-    icon: "warning",
-    showConfirmButton: true,
-    timer: 0
-  })
-  prizes.value.splice(randomNum, 1)
-  drawerNum.value++
-}
-
-const drawerNum = ref(0)
-
-const getRandomNum = arr => {
-  return Math.floor(Math.random() * arr.length)
-}
-
-const currentDrawer = computed(() => {
-  if (sortedArr.value.length) {
-    return sortedArr.value[drawerNum.value]
-  }
-
-  return ""
-})
-
-// const gameOverResult = ref([])
 </script>
 
 <template>
+  <div class="overflow-x-auto relative">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Product name
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            Apple MacBook Pro 17"
+          </th>
+          <td class="py-4 px-6">
+            Sliver
+          </td>
+          <td class="py-4 px-6">
+            Laptop
+          </td>
+          <td class="py-4 px-6">
+            $2999
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <span>參加成員</span>
   <div>
     <ul>
@@ -136,6 +108,19 @@ const currentDrawer = computed(() => {
       </li>
     </ul>
     <span v-else>無獎項</span>
+  </div>
+  <div>
+    <span>抽獎結果</span>
+    <ul>
+      <li
+        v-for="(item) of gameOverResult"
+        :key="item.drawer"
+      >
+        <span>
+          {{ item.drawer + " : " + item.prizeItem.label + " > " + item.prizeItem.money }}
+        </span>
+      </li>
+    </ul>
   </div>
 </template>
 
