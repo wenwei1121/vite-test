@@ -42,7 +42,7 @@ export const usePlay = () => {
             clonedFamilyArr.splice(randomNum, 1)
         } while (clonedFamilyArr.length !== 0)
         prizes.value = useCloned(prizesSample).cloned.value
-        currentDrawer.value = sortedArrKeys.value.next().value
+        currentDrawer.value = sortedArrKeys.value.next().value ?? ""
     }
 
     const randomPrize = () => {

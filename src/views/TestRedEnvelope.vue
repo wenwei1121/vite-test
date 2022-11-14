@@ -23,6 +23,7 @@ const {
     <div class="flex flex-col items-center p-8">
       <span>目前抽獎人</span>
       <img
+        v-show="currentDrawer !== ''"
         class="mt-5 mb-3 w-24 h-24 rounded-full shadow-lg"
         src="/docs/images/people/profile-picture-3.jpg"
         alt="Bonnie image"
@@ -36,9 +37,9 @@ const {
           type="button"
           class="inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center"
           :class="[
-            sortedArr.size || !prizes.length
-              ? 'cursor-pointer text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800'
-              : 'cursor-not-allowed text-gray-300 bg-gray-500'
+            !sortedArr.size || !prizes.length
+              ? 'cursor-not-allowed text-gray-300 bg-gray-500'
+              : 'cursor-pointer text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800'
           ]"
           @click="randomPrize"
         >
