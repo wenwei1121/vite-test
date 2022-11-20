@@ -45,35 +45,35 @@ export const usePlay = () => {
         currentDrawer.value = sortedArrKeys.value.next().value ?? ""
     }
 
-    const titleArr = ref([])
-
     const randomPrize = () => {
+        const titleArr = ref([])
         const randomNum = getRandomNum(prizes.value)
         const { label, money } = prizes.value[randomNum]
         sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
         prizes.value.splice(randomNum, 1)
-        titleArr.value.push(`${currentDrawer.value} 恭喜抽中 ${label} 賞 獎金: ${money}`)
+        titleArr.value.push(`
+            <span class="font-extrabold">${currentDrawer.value}</span> 恭喜抽中 <span class="text-red-500">${label}</span> 賞 獎金: <span class="text-red-500"> ${money} 元</span>
+        `)
         currentDrawer.value = sortedArrKeys.value.next().value
         if (
             prizes.value.length === 1 ||
             prizes.value.every(({ label }) => label === prizes.value[0].label)
         ) {
-            let x = 0
             do {
-                const { label, money } = prizes.value[x]
+                const { label, money } = prizes.value[0]
                 sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
-                titleArr.value.push(`${currentDrawer.value} 恭喜抽中 ${label} 賞 獎金: ${money}`)
+                titleArr.value.push(`
+                    <span class="font-extrabold">${currentDrawer.value}</span> 恭喜抽中 <span class="text-red-500">${label}</span> 賞 獎金: <span class="text-red-500">${money} 元</span>
+                `)
                 currentDrawer.value = sortedArrKeys.value.next().value
-                x++
-            } while (prizes.value.length === 0)
-            prizes.value = []
+                prizes.value.splice(0, 1)
+            } while (prizes.value.length !== 0)
         }
         useResultSwal({
             title: titleArr.value.join("\n"),
             showConfirmButton: true,
             timer: 0
         })
-        titleArr.value = []
     }
 
     const getRandomNum = arr => Math.floor(Math.random() * arr.length)
