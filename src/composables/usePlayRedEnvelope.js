@@ -45,16 +45,35 @@ export const usePlay = () => {
         currentDrawer.value = sortedArrKeys.value.next().value ?? ""
     }
 
+    const titleArr = ref([])
+
     const randomPrize = () => {
         const randomNum = getRandomNum(prizes.value)
         const { label, money } = prizes.value[randomNum]
         sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
-        useResultSwal({
-            title: `恭喜抽中${label}賞 獎金: ${money}`,
-            showConfirmButton: true
-        })
         prizes.value.splice(randomNum, 1)
+        titleArr.value.push(`${currentDrawer.value} 恭喜抽中 ${label} 賞 獎金: ${money}`)
         currentDrawer.value = sortedArrKeys.value.next().value
+        if (
+            prizes.value.length === 1 ||
+            prizes.value.every(({ label }) => label === prizes.value[0].label)
+        ) {
+            let x = 0
+            do {
+                const { label, money } = prizes.value[x]
+                sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
+                titleArr.value.push(`${currentDrawer.value} 恭喜抽中 ${label} 賞 獎金: ${money}`)
+                currentDrawer.value = sortedArrKeys.value.next().value
+                x++
+            } while (prizes.value.length === 0)
+            prizes.value = []
+        }
+        useResultSwal({
+            title: titleArr.value.join("\n"),
+            showConfirmButton: true,
+            timer: 0
+        })
+        titleArr.value = []
     }
 
     const getRandomNum = arr => Math.floor(Math.random() * arr.length)
