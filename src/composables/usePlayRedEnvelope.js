@@ -5,7 +5,7 @@ import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
 import { useCloned } from "@vueuse/core"
 
 export const usePlay = () => {
-    const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "sisterBoyfriend", "brother", "sun", "ning"]
+    const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "brother", "sun", "ning"]
     const prizesSample = [
         { id: 0, label: "A", money: 1200 },
         { id: 1, label: "B", money: 800 },
@@ -18,8 +18,7 @@ export const usePlay = () => {
         { id: 8, label: "D", money: 200 },
         { id: 9, label: "D", money: 200 },
         { id: 10, label: "D", money: 200 },
-        { id: 11, label: "D", money: 200 },
-        { id: 12, label: "D", money: 200 },
+        { id: 11, label: "D", money: 200 }
     ]
 
     const prizes = ref(useCloned(prizesSample).cloned.value)
@@ -45,30 +44,30 @@ export const usePlay = () => {
         currentDrawer.value = sortedArrKeys.value.next().value ?? ""
     }
 
+    const showAndHandlerPrize = (titleArr, prizeIndex) => {
+        const { label, money } = prizes.value[prizeIndex]
+        sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
+        titleArr.value.push(`
+            <span class="font-extrabold">${currentDrawer.value}</span> 恭喜抽中 <span class="text-red-500">${label}</span> 賞 獎金: <span class="text-red-500">${money} 元</span>
+        `)
+        currentDrawer.value = sortedArrKeys.value.next().value
+        prizes.value.splice(prizeIndex, 1)
+    }
+
     const randomPrize = () => {
         const titleArr = ref([])
         const randomNum = getRandomNum(prizes.value)
-        const { label, money } = prizes.value[randomNum]
-        sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
-        prizes.value.splice(randomNum, 1)
-        titleArr.value.push(`
-            <span class="font-extrabold">${currentDrawer.value}</span> 恭喜抽中 <span class="text-red-500">${label}</span> 賞 獎金: <span class="text-red-500"> ${money} 元</span>
-        `)
-        currentDrawer.value = sortedArrKeys.value.next().value
+        showAndHandlerPrize(titleArr, randomNum)
+
         if (
             prizes.value.length === 1 ||
             prizes.value.every(({ label }) => label === prizes.value[0].label)
         ) {
             do {
-                const { label, money } = prizes.value[0]
-                sortedArr.set(currentDrawer.value, `${label}賞 > ${money}元`)
-                titleArr.value.push(`
-                    <span class="font-extrabold">${currentDrawer.value}</span> 恭喜抽中 <span class="text-red-500">${label}</span> 賞 獎金: <span class="text-red-500">${money} 元</span>
-                `)
-                currentDrawer.value = sortedArrKeys.value.next().value
-                prizes.value.splice(0, 1)
+                showAndHandlerPrize(titleArr, 0)
             } while (prizes.value.length !== 0)
         }
+
         useResultSwal({
             title: titleArr.value.join("\n"),
             showConfirmButton: true,
