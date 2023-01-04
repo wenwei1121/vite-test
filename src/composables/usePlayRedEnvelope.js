@@ -24,6 +24,15 @@ export const usePlay = () => {
     const prizes = ref(useCloned(prizesSample).cloned.value)
     const sortedArr = reactive(new Map())
     const sortedArrKeys = computed(() => sortedArr.keys())
+    const twoHundredPrizeMember = computed(() => {
+        const filterTwoHundredMember = []
+        for (const [key, value] of sortedArr.entries()) {
+            if (value.startsWith("D")) {
+                filterTwoHundredMember.push({ name: key, guessNum: 0 })
+            }
+        }
+        return filterTwoHundredMember
+    })
     const currentDrawer = ref("")
 
     const randomSortFamilyMember = async () => {
@@ -77,12 +86,23 @@ export const usePlay = () => {
 
     const getRandomNum = arr => Math.floor(Math.random() * arr.length)
 
+    const sixHundredStep = ref(false)
+
+    const numToGuess = ref(0)
+    const randomMakeNumToGuess = () => {
+        numToGuess.value = getRandomNum(Array(101))
+    }
+
     return {
         prizes,
         familyArr,
         sortedArr,
-        currentDrawer,     
+        twoHundredPrizeMember,
+        currentDrawer,
+        sixHundredStep,
+        numToGuess,
         randomSortFamilyMember,
-        randomPrize
+        randomPrize,
+        randomMakeNumToGuess
     }
 }

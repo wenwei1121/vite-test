@@ -11,15 +11,19 @@ const {
   prizes,
   familyArr,
   sortedArr,
+  twoHundredPrizeMember,
   currentDrawer,
+  sixHundredStep,
+  numToGuess,
   randomSortFamilyMember,
-  randomPrize
+  randomPrize,
+  randomMakeNumToGuess
 } = usePlay()
 
 </script>
 
 <template>
-  <div class="flex justify-evenly">
+  <div v-show="!sixHundredStep" class="flex justify-evenly">
     <!-- 成員與剩餘獎項 -->
     <div class="w-full max-w-xl bg-gray-800 rounded-lg border border-gray-700 shadow-md">
       <div class="flex justify-evenly py-8">
@@ -110,6 +114,7 @@ const {
         </h5>
         <div class="flex mt-5 space-x-3 md:mt-6">
           <button
+            v-show="prizes.length"
             :disabled="!sortedArr.size || !prizes.length"
             type="button"
             class="inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center"
@@ -121,6 +126,17 @@ const {
             @click="randomPrize"
           >
             抽獎
+          </button>
+          <button
+            v-show="!prizes.length"
+            type="button"
+            class="
+              inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center
+              cursor-pointer text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
+            "
+            @click="sixHundredStep = true"
+          >
+            600元昇格戰
           </button>
         </div>
       </div>
@@ -189,6 +205,84 @@ const {
         </div>
       </div>
     </div>
+  </div>
+  <div v-show="sixHundredStep">
+    <!-- 600元昇格戰成員 -->
+    <div class="w-full max-w-xl bg-gray-800 rounded-lg border border-gray-700 shadow-md">
+      <div class="flex justify-evenly py-8">
+        <div class="flex flex-col items-center">
+          <span class="text-lg text-gray-200 font-extrabold">600元昇格戰成員</span>
+          <div class="mt-5 overflow-x-auto rounded-lg relative">
+            <table class="text-md text-left">
+              <thead class="uppercase bg-gray-700">
+                <tr>
+                  <th
+                    scope="col"
+                    class="py-3 px-6 text-gray-400 font-semibold" 
+                  >
+                    名字
+                  </th>
+                  <th
+                    scope="col"
+                    class="py-3 px-6 text-gray-400 font-semibold"
+                  >
+                    猜的數字
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="member of twoHundredPrizeMember"
+                  :key="member.name"
+                  class="border-b bg-gray-600 border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
+                  >
+                    {{ member.name }}
+                  </th>
+                  <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
+                    {{ member.guessNum }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700">
+      <div class="flex flex-col items-center p-8">
+        <span class="text-lg text-gray-200 font-extrabold">幸運數字</span>
+        <h2 class="text-3xl font-semibold text-gray-100">
+          {{ numToGuess }}
+        </h2>
+        <div class="flex mt-5 space-x-3 md:mt-6">
+          <button
+            type="button"
+            class="
+              inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center
+              cursor-pointer text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
+            "
+            @click="randomMakeNumToGuess"
+          >
+            產生數字
+          </button>
+        </div>
+      </div>
+    </div>
+    <button
+      v-show="!prizes.length"
+      type="button"
+      class="
+        inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center
+        cursor-pointer text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
+      "
+      @click="sixHundredStep = false"
+    >
+      返回抽獎名單
+    </button>
   </div>
 </template>
 
