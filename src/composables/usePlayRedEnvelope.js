@@ -24,15 +24,7 @@ export const usePlay = () => {
     const prizes = ref(useCloned(prizesSample).cloned.value)
     const sortedArr = reactive(new Map())
     const sortedArrKeys = computed(() => sortedArr.keys())
-    const twoHundredPrizeMember = computed(() => {
-        const filterTwoHundredMember = []
-        for (const [key, value] of sortedArr.entries()) {
-            if (value.startsWith("D")) {
-                filterTwoHundredMember.push({ name: key, guessNum: 0 })
-            }
-        }
-        return filterTwoHundredMember
-    })
+    
     const currentDrawer = ref("")
 
     const randomSortFamilyMember = async () => {
@@ -63,6 +55,8 @@ export const usePlay = () => {
         prizes.value.splice(prizeIndex, 1)
     }
 
+    const twoHundredPrizeMember = ref([])
+
     const randomPrize = () => {
         const titleArr = ref([])
         const randomNum = getRandomNum(prizes.value)
@@ -75,6 +69,18 @@ export const usePlay = () => {
             do {
                 showAndHandlerPrize(titleArr, 0)
             } while (prizes.value.length !== 0)
+        }
+
+        if (prizes.value.length === 0) {
+            for (const [key, value] of sortedArr.entries()) {
+                if (value.startsWith("D")) {
+                    twoHundredPrizeMember.value.push({
+                        name: key,
+                        guessNum: 0,
+                        comfirmGuessNumStatus: false
+                    })
+                }
+            }
         }
 
         useResultSwal({
@@ -90,7 +96,40 @@ export const usePlay = () => {
 
     const numToGuess = ref(0)
     const randomMakeNumToGuess = () => {
+        if (twoHundredPrizeMember.value.some(({ comfirmGuessNumStatus }) => !comfirmGuessNumStatus)) {
+            useResultSwal({
+                title: "200元每一位先確認要猜的數字",
+                icon: "error",
+                showConfirmButton: true,
+                timer: 0
+            })
+            return
+        }
+
         numToGuess.value = getRandomNum(Array(101))
+
+        const hitLuckyNumMember = twoHundredPrizeMember.value.find(({ guessNum }) => guessNum * 1 === numToGuess.value)
+        if (hitLuckyNumMember !== undefined) {
+            console.log(hitLuckyNumMember)
+            return
+        }
+        console.log("沒命中")
+        // for (const { guessNum } of twoHundredPrizeMember.value) {
+
+        // }
+    }
+
+    const comfirmGuessNum = member => {
+        if (member.guessNum === "") {
+            useResultSwal({
+                title: "數字不能為空",
+                icon: "error",
+                showConfirmButton: true,
+                timer: 0
+            })
+            return
+        }
+        member.comfirmGuessNumStatus = true
     }
 
     return {
@@ -103,6 +142,7 @@ export const usePlay = () => {
         numToGuess,
         randomSortFamilyMember,
         randomPrize,
-        randomMakeNumToGuess
+        randomMakeNumToGuess,
+        comfirmGuessNum
     }
 }

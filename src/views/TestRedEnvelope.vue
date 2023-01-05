@@ -3,6 +3,8 @@
 import { useCurrentPath } from "@/store/store.js"
 // composables
 import { usePlay } from "@/composables/usePlayRedEnvelope"
+// directives
+import { vNumOnly } from "@/directives/useDealInput"
 
 const { setCurrentPath } = useCurrentPath()
 setCurrentPath("/TestRedEnvelope")
@@ -17,13 +19,17 @@ const {
   numToGuess,
   randomSortFamilyMember,
   randomPrize,
-  randomMakeNumToGuess
+  randomMakeNumToGuess,
+  comfirmGuessNum
 } = usePlay()
 
 </script>
 
 <template>
-  <div v-show="!sixHundredStep" class="flex justify-evenly">
+  <div
+    v-show="!sixHundredStep"
+    class="flex justify-evenly"
+  >
     <!-- 成員與剩餘獎項 -->
     <div class="w-full max-w-xl bg-gray-800 rounded-lg border border-gray-700 shadow-md">
       <div class="flex justify-evenly py-8">
@@ -243,7 +249,24 @@ const {
                     {{ member.name }}
                   </th>
                   <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
-                    {{ member.guessNum }}
+                    <input
+                      v-show="!member.comfirmGuessNumStatus"
+                      v-model.number="member.guessNum"
+                      v-num-only
+                      class="input is-small"
+                      type="number"
+                    />
+                    <span v-show="member.comfirmGuessNumStatus">{{ member.guessNum }}</span>
+                    <button
+                      v-show="!member.comfirmGuessNumStatus"
+                      class="
+                        inline-flex items-center py-2 px-4 font-medium rounded-lg text-sm text-center
+                        cursor-pointer text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
+                      "
+                      @click="comfirmGuessNum(member)"
+                    >
+                      comfirm
+                    </button>
                   </td>
                 </tr>
               </tbody>
