@@ -108,18 +108,55 @@ export const usePlay = () => {
 
         numToGuess.value = getRandomNum(Array(101))
 
-        const hitLuckyNumMember = twoHundredPrizeMember.value.find(({ guessNum }) => guessNum * 1 === numToGuess.value)
-        if (hitLuckyNumMember !== undefined) {
-            console.log(hitLuckyNumMember)
-            return
-        }
-        console.log("沒命中")
-        // for (const { guessNum } of twoHundredPrizeMember.value) {
+        let minmalMinus = 101
+        let minusNum = 0
+        let level = "B"
+        let upMoney = 800
+        let currentWinMember = []
+        let titleArr = []
+        let content = "最靠近幸運數字"
 
-        // }
+        for (const { name, guessNum } of twoHundredPrizeMember.value) {
+            minusNum = Math.abs(guessNum * 1 - numToGuess.value)
+
+            if (minusNum === 0) {
+                currentWinMember = [name]
+                level = "A"
+                upMoney = 1200
+                content = "猜中幸運數字"
+                break
+            }
+            if (minusNum === minmalMinus) {
+                currentWinMember.push(name)
+            }
+            if (minusNum < minmalMinus) {
+                minmalMinus = minusNum
+                currentWinMember = [name]
+            }
+        }
+
+        if (currentWinMember.length === 2) {
+            level = "C"
+            upMoney = 600
+            content = "是兩人中靠近幸運數字的其中一位"
+        }
+
+        currentWinMember.forEach(name => {
+            titleArr.push(`
+                <span class="font-extrabold">${name}</span> 恭喜${content} 獎金提升為 <span class="text-red-500">${upMoney} 元</span>
+            `)
+            sortedArr.set(name, `提升為 ${level}賞 > ${upMoney}元`)
+        })
+
+        useResultSwal({
+            title: titleArr.join("\n"),
+            showConfirmButton: true,
+            timer: 0
+        })
+        sixHundredStep.value = false
     }
 
-    const comfirmGuessNum = member => {
+    const comfirmGuessNum = async (member) => {
         if (member.guessNum === "") {
             useResultSwal({
                 title: "數字不能為空",
@@ -129,7 +166,22 @@ export const usePlay = () => {
             })
             return
         }
-        member.comfirmGuessNumStatus = true
+        
+        const filterComfirmedLuckNumMember = twoHundredPrizeMember.value.filter(({ comfirmGuessNumStatus }) => comfirmGuessNumStatus)
+        if (filterComfirmedLuckNumMember.some(({ guessNum }) => guessNum === member.guessNum)) {
+            useResultSwal({
+                title: "數字已被選擇, 不能重複",
+                icon: "error",
+                showConfirmButton: true,
+                timer: 0
+            })
+            return
+        }
+
+        const checkStatus = await useConfirmSwal({ title: "確定這是你的幸運數字嗎?" })
+        if (checkStatus) {
+            member.comfirmGuessNumStatus = true
+        }
     }
 
     return {
