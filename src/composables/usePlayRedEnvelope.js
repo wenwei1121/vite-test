@@ -108,7 +108,7 @@ export const usePlay = () => {
 
         numToGuess.value = getRandomNum(Array(101))
 
-        let minmalMinus = 101
+        let minimalMinus = 101
         let minusNum = 0
         let level = "B"
         let upMoney = 800
@@ -118,20 +118,24 @@ export const usePlay = () => {
 
         for (const { name, guessNum } of twoHundredPrizeMember.value) {
             minusNum = Math.abs(guessNum * 1 - numToGuess.value)
-
+            if (minusNum > minimalMinus) {
+                continue
+            }
+            if (minusNum < minimalMinus) {
+                minimalMinus = minusNum
+                currentWinMember = [name]
+                continue
+            }
+            if (minusNum === minimalMinus) {
+                currentWinMember.push(name)
+                continue
+            }
             if (minusNum === 0) {
                 currentWinMember = [name]
                 level = "A"
                 upMoney = 1200
                 content = "猜中幸運數字"
                 break
-            }
-            if (minusNum === minmalMinus) {
-                currentWinMember.push(name)
-            }
-            if (minusNum < minmalMinus) {
-                minmalMinus = minusNum
-                currentWinMember = [name]
             }
         }
 
