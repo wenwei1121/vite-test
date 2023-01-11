@@ -2,7 +2,7 @@ import { ref, reactive, computed } from "vue"
 // composables
 import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
 // vueuse
-import { useCloned } from "@vueuse/core"
+import { useCloned, useIntervalFn } from "@vueuse/core"
 
 export const usePlay = () => {
     const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "brother", "sun", "ning"]
@@ -94,7 +94,14 @@ export const usePlay = () => {
 
     const sixHundredStep = ref(false)
 
-    const numToGuess = ref(0)
+    const tensDigits = ref(0)
+    const digits = ref(0)
+    const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    const { pause: stopRunLuckyNum } = useIntervalFn(() => {
+        tensDigits.value = getRandomNum(numArray)
+        digits.value = getRandomNum(numArray)
+    }, 30)
+    
     const randomMakeNumToGuess = () => {
         if (twoHundredPrizeMember.value.some(({ comfirmGuessNumStatus }) => !comfirmGuessNumStatus)) {
             useResultSwal({
@@ -106,9 +113,11 @@ export const usePlay = () => {
             return
         }
 
-        numToGuess.value = getRandomNum(Array(101))
+        stopRunLuckyNum()
 
-        let minimalMinus = 101
+        const numToGuess = (tensDigits.value + "" + tensDigits.value) * 1
+
+        let minimalMinus = 100
         let minusNum = 0
         let level = "B"
         let upMoney = 800
@@ -117,7 +126,7 @@ export const usePlay = () => {
         let content = "最靠近幸運數字"
 
         for (const { name, guessNum } of twoHundredPrizeMember.value) {
-            minusNum = Math.abs(guessNum * 1 - numToGuess.value)
+            minusNum = Math.abs(guessNum * 1 - numToGuess)
             if (minusNum > minimalMinus) {
                 continue
             }
@@ -157,7 +166,6 @@ export const usePlay = () => {
             showConfirmButton: true,
             timer: 0
         })
-        sixHundredStep.value = false
     }
 
     const comfirmGuessNum = async (member) => {
@@ -195,10 +203,11 @@ export const usePlay = () => {
         twoHundredPrizeMember,
         currentDrawer,
         sixHundredStep,
-        numToGuess,
+        tensDigits,
+        digits,
         randomSortFamilyMember,
         randomPrize,
         randomMakeNumToGuess,
-        comfirmGuessNum
+        comfirmGuessNum,
     }
 }

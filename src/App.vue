@@ -22,7 +22,10 @@ const pathInfos = [
         :key="pathItem.path"
         :class="[currentPath === pathItem.path ? 'is-active' : '']"
       >
-        <RouterLink :to="pathItem.path">
+        <RouterLink
+          :to="pathItem.path"
+          class="border-gray-700 text-gray-400"
+        >
           <span>{{ pathItem.tabName }}</span>
         </RouterLink>
       </li>
@@ -33,4 +36,45 @@ const pathInfos = [
 
 <style>
 @import "bulma/css/bulma.min.css";
+
+.tabs ul {
+  border-color: rgb(55 65 81 / var(--tw-border-opacity));
+}
+
+.tabs li a {
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+  border-color: rgb(55 65 81 / var(--tw-border-opacity));
+}
+
+.tabs li a:hover {
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+  border-color: rgb(55 65 81 / var(--tw-border-opacity));
+}
+
+.tabs li.is-active a {
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+  border-bottom-color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+/* // .tabs {
+//   ul {
+//     border-color: rgb(55 65 81 / var(--tw-border-opacity));
+//   }
+
+//   li {
+//     a {
+//       color: rgb(156 163 175 / var(--tw-text-opacity));
+//       border-color: rgb(55 65 81 / var(--tw-border-opacity));
+
+//       :hover {
+//         color: rgb(229 231 235 / var(--tw-text-opacity));
+//         border-color: rgb(55 65 81 / var(--tw-border-opacity));
+//       }
+//     }
+//   }
+
+//   li.is-active a {
+//     color: rgb(229 231 235 / var(--tw-text-opacity));
+//     border-bottom-color: rgb(229 231 235 / var(--tw-text-opacity));
+//   }
+// } */
 </style>
