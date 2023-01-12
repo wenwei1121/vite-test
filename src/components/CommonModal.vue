@@ -2,8 +2,6 @@
 // pinia
 import { storeToRefs } from "pinia"
 import { useLoadingState } from "@/store/store.js"
-// vueuse
-import { useVModel } from "@vueuse/core"
 // headlessui
 import {
   Dialog,

@@ -1,6 +1,3 @@
-import { ref, reactive } from "vue"
-// vueRouter
-import { useRouter } from "vue-router"
 // pinia
 import { storeToRefs } from "pinia"
 import { useStore, useLoadingState } from "@/store/store.js"

@@ -1,6 +1,4 @@
 <script setup>
-// vueuse
-import { useVModel } from "@vueuse/core"
 // headlessui
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue"
 // heroIcon

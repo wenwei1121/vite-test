@@ -1,4 +1,3 @@
-import { ref } from "vue"
 // pinia
 import { useLoadingState, useSearchState } from "@/store/store"
 // composables

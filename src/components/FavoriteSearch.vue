@@ -1,6 +1,4 @@
 <script setup>
-  // components
-  import CommonModal from "@/components/CommonModal.vue"
   // headlessui
   import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue"
   // heroIcons

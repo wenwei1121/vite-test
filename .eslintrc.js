@@ -6,7 +6,8 @@ module.exports = {
 	},
 	"extends": [
 		"eslint:recommended",
-		"plugin:vue/vue3-recommended" // 使用插件支持vue3
+		"plugin:vue/vue3-recommended", // 使用插件支持vue3
+		"./.eslintrc-auto-import.json"
 	],
 	"overrides": [
 	],

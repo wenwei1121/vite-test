@@ -1,6 +1,4 @@
 <script setup>
-// router
-import { RouterLink, RouterView } from "vue-router"
 // pinia
 import { storeToRefs } from "pinia"
 import { useCurrentPath } from "@/store/store.js"

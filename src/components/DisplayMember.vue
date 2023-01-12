@@ -1,8 +1,4 @@
 <script setup>
-import { toRefs } from "vue"
-// component
-import GenderInput from "@/components/GenderInput.vue"
-import CommonModal from "@/components/CommonModal.vue"
 // pinia
 import { storeToRefs } from "pinia"
 import { useStore, useLoadingState } from "@/store/store.js"

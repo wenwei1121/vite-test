@@ -1,6 +1,4 @@
 <script setup>
-// component
-import GenderInput from "@/components/GenderInput.vue"
 // pinia
 import { storeToRefs } from "pinia"
 import { useCurrentPath, useLoadingState } from "@/store/store.js"

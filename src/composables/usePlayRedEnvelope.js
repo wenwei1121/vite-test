@@ -1,8 +1,5 @@
-import { ref, reactive, computed } from "vue"
 // composables
 import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
-// vueuse
-import { useCloned, useIntervalFn } from "@vueuse/core"
 
 export const usePlay = () => {
     const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "brother", "sun", "ning"]

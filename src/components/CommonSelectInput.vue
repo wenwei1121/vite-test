@@ -1,7 +1,4 @@
 <script setup>
-import { computed } from "vue"
-// vueuse
-import { useVModel } from "@vueuse/core"
 // headlessui
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue"
 // heroIcon

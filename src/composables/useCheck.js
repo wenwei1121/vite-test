@@ -1,4 +1,3 @@
-// pinia
 export const useCheckInputAction = (checkArr, memberInfo) => {
   const { id = 0, name, age = 0 } = memberInfo
 

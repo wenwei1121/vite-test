@@ -1,8 +1,4 @@
 <script setup>
-// components
-import FavoriteSearch from "./FavoriteSearch.vue"
-import GenderInput from "./GenderInput.vue"
-import CommonSelectInput from "./CommonSelectInput.vue"
 // pinia
 import { useSearchState } from "@/store/store"
 // directives
