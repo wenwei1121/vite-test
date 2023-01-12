@@ -1,10 +1,3 @@
-// pinia
-import { useLoadingState, useSearchState } from "@/store/store"
-// composables
-import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
-import { useGetApiResult } from "@/composables/useApi"
-import { useCheckInputAction } from "@/composables/useCheck"
-
 export const useFavoriteSearchActions = () => {
   const { searchInfo } = useSearchState()
   const applyConditions = (conditions) => {

@@ -1,12 +1,4 @@
 <script setup>
-// pinia
-import { storeToRefs } from "pinia"
-import { useCurrentPath, useLoadingState } from "@/store/store.js"
-// composables
-import { useMemberActions } from "@/composables/useApiMemberActions"
-// directives
-import { vFocus, vNumOnly } from "@/directives/useDealInput"
-
 const { setCurrentPath } = useCurrentPath()
 setCurrentPath("/AddPipiFamilyMember")
 

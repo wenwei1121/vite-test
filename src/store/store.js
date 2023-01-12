@@ -1,9 +1,3 @@
-// pinia
-import { defineStore } from "pinia"
-// composables
-import { useResultSwal } from "@/composables/useAlert"
-import { useGetApiResult } from "@/composables/useApi"
-
 export const useCurrentPath = defineStore("currentPath", () => {
   const currentPath = ref("")
 

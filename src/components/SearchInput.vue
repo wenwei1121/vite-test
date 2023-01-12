@@ -1,6 +1,4 @@
 <script setup>
-// pinia
-import { useSearchState } from "@/store/store"
 // directives
 import { vFocus, vNumOnly } from "@/directives/useDealInput"
 // heroIcon

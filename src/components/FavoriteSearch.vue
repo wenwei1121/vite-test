@@ -1,6 +1,4 @@
 <script setup>
-  // headlessui
-  import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue"
   // heroIcons
   import { HeartIcon, PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/solid"
   import { useFavoriteSearchActions } from "@/composables/useApiFavoriteSearchActions"

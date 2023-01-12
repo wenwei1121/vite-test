@@ -1,6 +1,4 @@
 <script setup>
-// headlessui
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue"
 // heroIcon
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid"
 

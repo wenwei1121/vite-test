@@ -1,9 +1,4 @@
 <script setup>
-// pinia
-import { storeToRefs } from "pinia"
-import { useStore, useLoadingState } from "@/store/store.js"
-// composables
-import { useMemberActions } from "@/composables/useApiMemberActions"
 // directives
 import { vNumOnly } from "@/directives/useDealInput"
 

@@ -1,8 +1,4 @@
 <script setup>
-// pinia
-import { useCurrentPath } from "@/store/store.js"
-// composables
-import { usePlay } from "@/composables/usePlayRedEnvelope"
 // directives
 import { vNumOnly } from "@/directives/useDealInput"
 

@@ -1,6 +1,3 @@
-// composables
-import { useConfirmSwal, useResultSwal } from "@/composables/useAlert"
-
 export const usePlay = () => {
     const familyArr = ["tako", "takoWife", "aunt", "auntHusband", "cat", "show", "huei", "hueiWife", "sister", "brother", "sun", "ning"]
     const prizesSample = [

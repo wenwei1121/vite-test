@@ -1,16 +1,4 @@
 <script setup>
-// pinia
-import { storeToRefs } from "pinia"
-import { useLoadingState } from "@/store/store.js"
-// headlessui
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue"
-
 const { loadingState } = storeToRefs(useLoadingState())
 
 const props = defineProps({

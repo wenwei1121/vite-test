@@ -1,6 +1,4 @@
 <script setup>
-// headlessui
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue"
 // heroIcon
 import { CheckIcon } from "@heroicons/vue/20/solid"
 
