@@ -1,4 +1,7 @@
 <script setup>
+// directives
+import { vFocus, vNumOnly } from "@/directives/useDealInput"
+
 const { setCurrentPath } = useCurrentPath()
 setCurrentPath("/AddPipiFamilyMember")
 

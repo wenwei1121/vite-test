@@ -1,11 +1,14 @@
+import { $ref } from "vue/macros"
+
 export const useCurrentPath = defineStore("currentPath", () => {
-  const currentPath = ref("")
+  let currentPath = $ref("")
 
   const setCurrentPath = (passPathValue) => {
-    currentPath.value = passPathValue
+    currentPath = passPathValue
   }
 
-  return { currentPath, setCurrentPath }
+  // eslint-disable-next-line no-undef
+  return $$({ currentPath, setCurrentPath })
 })
 
 export const useStore = defineStore("memberInfo", () => {

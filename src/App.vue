@@ -1,9 +1,6 @@
 <script setup>
-// pinia
-import { storeToRefs } from "pinia"
-import { useCurrentPath } from "@/store/store.js"
-
-const { currentPath } = storeToRefs(useCurrentPath())
+// eslint-disable-next-line no-undef
+const { currentPath } = $(useCurrentPath())
 
 const pathInfos = [
   { path: "/", tabName: "SHOW MEMBER" },

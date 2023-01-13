@@ -9,7 +9,7 @@ import { HeadlessUiResolver } from "unplugin-vue-components/resolvers"
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		vue(),
+		vue({ reactivityTransform: true }),
 		// 增加下面的配置项,这样在运行时就能检查eslint规范
 		eslintPlugin({
 			include: ["src/**/*.js", "src/**/*.vue", "src/*.js", "src/*.vue"],
