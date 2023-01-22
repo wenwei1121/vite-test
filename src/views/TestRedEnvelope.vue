@@ -14,10 +14,12 @@ const {
   sixHundredStep,
   tensDigits,
   digits,
+  isActive,
   randomSortFamilyMember,
   randomPrize,
   randomMakeNumToGuess,
-  comfirmGuessNum
+  comfirmGuessNum,
+  reRunLuckyNum
 } = usePlay()
 
 </script>
@@ -46,7 +48,7 @@ const {
               </thead>
               <tbody>
                 <tr
-                  v-for="name of familyArr"
+                  v-for="{ name } of familyArr"
                   :key="name"
                   class="border-b bg-gray-600 border-gray-700"
                 >
@@ -108,12 +110,12 @@ const {
       <div class="flex flex-col items-center p-8">
         <span class="text-lg text-gray-200 font-extrabold">目前抽獎人</span>
         <img
-          class="mt-5 mb-3 w-24 h-24 rounded-full shadow-lg bg-white"
-          src="@/assets/logo.png"
+          class="mt-5 mb-3 w-36 h-36 rounded-full shadow-lg bg-white"
+          :src="currentDrawer.img"
           alt=""
         />
-        <h5 class="text-3xl font-semibold text-gray-100">
-          {{ currentDrawer !== "" ? currentDrawer : "XXX" }}
+        <h5 class="text-4xl font-semibold text-gray-100">
+          {{ currentDrawer.name }}
         </h5>
         <div class="flex mt-5 space-x-3 md:mt-6">
           <button
@@ -244,19 +246,24 @@ const {
                 >
                   <th
                     scope="row"
-                    class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
+                    class="py-4 px-6 font-medium whitespace-nowrap text-2xl text-gray-100"
                   >
                     {{ member.name }}
                   </th>
-                  <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
+                  <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100 flex gap-3">
                     <input
                       v-show="!member.comfirmGuessNumStatus"
                       v-model.number="member.guessNum"
                       v-num-only
-                      class="input is-small"
+                      class="input"
                       type="number"
                     />
-                    <span v-show="member.comfirmGuessNumStatus">{{ member.guessNum }}</span>
+                    <span
+                      v-show="member.comfirmGuessNumStatus"
+                      class="text-2xl"
+                    >
+                      {{ member.guessNum }}
+                    </span>
                     <button
                       v-show="!member.comfirmGuessNumStatus"
                       class="
@@ -278,11 +285,12 @@ const {
     <div class="w-full max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700">
       <div class="flex flex-col items-center p-8">
         <span class="text-lg text-gray-200 font-extrabold">幸運數字</span>
-        <h2 class="text-5xl font-semibold text-gray-100">
+        <h2 class="text-8xl font-semibold text-gray-100">
           {{ tensDigits }}{{ digits }}
         </h2>
         <div class="flex flex-col gap-3 mt-5 md:mt-6">
           <button
+            v-show="isActive"
             type="button"
             class="
               inline-flex justify-center items-center py-2 px-4 font-medium rounded-lg text-sm text-center
@@ -290,7 +298,18 @@ const {
             "
             @click="randomMakeNumToGuess"
           >
-            產生數字
+            產生幸運數字
+          </button>
+          <button
+            v-show="!isActive"
+            type="button"
+            class="
+              inline-flex justify-center items-center py-2 px-4 font-medium rounded-lg text-sm text-center
+              cursor-pointer text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
+            "
+            @click="reRunLuckyNum"
+          >
+            重跑幸運數字
           </button>
           <button
             v-show="!prizes.length"
