@@ -7,11 +7,11 @@ export const vFocus = {
 export const vNumOnly = {
   mounted: (el) => {
     el.handler = () => {
-      el.value = el.value.replace(/\D+/g, "")
+      el.value = el.value.replace(/\D+/g, '')
     }
-    el.addEventListener("input", el.handler)
+    el.addEventListener('input', el.handler)
   },
   unmounted: (el) => {
-    el.removeEventListener("input", el.handler)
+    el.removeEventListener('input', el.handler)
   },
 }

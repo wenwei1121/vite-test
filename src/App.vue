@@ -3,9 +3,9 @@
 const { currentPath } = $(useCurrentPath())
 
 const pathInfos = [
-  { path: "/", tabName: "SHOW MEMBER" },
-  { path: "/AddPipiFamilyMember", tabName: "ADD MEMBER" },
-  { path: "/TestRedEnvelope", tabName: "Play Drawer RedEnvelope" },
+  { path: '/', tabName: 'SHOW MEMBER' },
+  { path: '/AddPipiFamilyMember', tabName: 'ADD MEMBER' },
+  { path: '/TestRedEnvelope', tabName:'Play Drawer RedEnvelope' }
 ]
 </script>
 

@@ -1,7 +1,7 @@
-import { $ref } from "vue/macros"
+import { $ref } from 'vue/macros'
 
-export const useCurrentPath = defineStore("currentPath", () => {
-  let currentPath = $ref("")
+export const useCurrentPath = defineStore('currentPath', () => {
+  let currentPath = $ref('')
 
   const setCurrentPath = (passPathValue) => {
     currentPath = passPathValue
@@ -11,40 +11,28 @@ export const useCurrentPath = defineStore("currentPath", () => {
   return $$({ currentPath, setCurrentPath })
 })
 
-export const useStore = defineStore("memberInfo", () => {
+export const useStore = defineStore('memberInfo', () => {
   const changeMember = ref([])
 
   const { searchInfo } = useSearchState()
   // filterMember by searchState
   const filterFamilyMember = computed(() => {
     return changeMember.value.filter((member) => {
-      if (
-        member.name
-          .toUpperCase()
-          .indexOf(searchInfo.inputName.toUpperCase()) === -1
-      )
-        return false
+      if (member.name.toUpperCase().indexOf(searchInfo.inputName.toUpperCase()) === -1) return false
 
-      if (
-        searchInfo.selectGender !== -1 &&
-        member.gender !== searchInfo.selectGender
-      )
-        return false
+      if (searchInfo.selectGender !== -1 && member.gender !== searchInfo.selectGender) return false
 
-      if (
-        searchInfo.selectComparisonOperator !== "no" &&
-        searchInfo.inputAge !== ""
-      ) {
+      if (searchInfo.selectComparisonOperator !== 'no' && searchInfo.inputAge !== '') {
         switch (searchInfo.selectComparisonOperator) {
-          case "greater":
+          case 'greater':
             return member.age > searchInfo.inputAge
-          case "less":
+          case 'less':
             return member.age < searchInfo.inputAge
-          case "equal":
+          case 'equal':
             return member.age === searchInfo.inputAge
-          case "greaterOrEqual":
+          case 'greaterOrEqual':
             return member.age >= searchInfo.inputAge
-          case "lessOrEqual":
+          case 'lessOrEqual':
             return member.age <= searchInfo.inputAge
         }
       }
@@ -55,10 +43,10 @@ export const useStore = defineStore("memberInfo", () => {
 
   const setMember = async () => {
     try {
-      const data = await useGetApiResult("members", "readPiPiMembers")
+      const data = await useGetApiResult('members', 'readPiPiMembers')
       changeMember.value = data
     } catch (err) {
-      useResultSwal({ title: "Reading members failed", icon: "error" })
+      useResultSwal({ title: 'Reading members failed', icon: 'error' })
     }
   }
 
@@ -69,7 +57,7 @@ export const useStore = defineStore("memberInfo", () => {
   }
 })
 
-export const useLoadingState = defineStore("loadingState", () => {
+export const useLoadingState = defineStore('loadingState', () => {
   const loadingState = ref(0)
 
   const getLoadingState = computed(() => {
@@ -87,10 +75,10 @@ export const useLoadingState = defineStore("loadingState", () => {
   }
 })
 
-export const useSearchState = defineStore("searchState", () => {
+export const useSearchState = defineStore('searchState', () => {
   const searchInitState = {
-    inputName: "",
-    selectComparisonOperator: "no",
+    inputName: '',
+    selectComparisonOperator: 'no',
     inputAge: 0,
     selectGender: -1,
   }

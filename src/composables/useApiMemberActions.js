@@ -1,14 +1,14 @@
 export const useMemberActions = () => {
   const addMemberInfo = reactive({
-    name: "",
+    name: '',
     age: 0,
     gender: 0,
   })
   const genderInfo = [
-    { genderText: "female", genderValue: 0 },
-    { genderText: "male", genderValue: 1 },
+    { genderText: 'female', genderValue: 0 },
+    { genderText: 'male', genderValue: 1 },
   ]
-  const userTableInfo = ["Name", "Age", "Gender", "Action"]
+  const userTableInfo = ['Name', 'Age', 'Gender', 'Action']
 
   const isOpen = ref(false)
 
@@ -19,21 +19,17 @@ export const useMemberActions = () => {
   const addMember = async () => {
     const errMsg = useCheckInputAction(changeMember, addMemberInfo)
     if (errMsg) {
-      useResultSwal({ title: errMsg, icon: "error" })
+      useResultSwal({ title: errMsg, icon: 'error' })
       return
     }
 
     try {
       changeLoadingState(1)
-      const { message } = await useGetApiResult(
-        "/members",
-        "addPiPiMembers",
-        addMemberInfo
-      )
+      const { message } = await useGetApiResult('/members', 'addPiPiMembers', addMemberInfo)
       useResultSwal({ title: message })
-      router.push({ path: "/" })
+      router.push({ path: '/' })
     } catch (err) {
-      useResultSwal({ title: "Add new member failed", icon: "error" })
+      useResultSwal({ title: 'Add new member failed', icon: 'error' })
     } finally {
       changeLoadingState(0)
     }
@@ -44,22 +40,22 @@ export const useMemberActions = () => {
   const updateMember = async (member) => {
     const errMsg = useCheckInputAction(changeMember, member)
     if (errMsg) {
-      useResultSwal({ title: errMsg, icon: "error" })
+      useResultSwal({ title: errMsg, icon: 'error' })
       return
     }
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult("/members", "updatePiPiMembers", member)
-      if (data.status === "ok") {
+      const data = await useGetApiResult('/members', 'updatePiPiMembers', member)
+      if (data.status === 'ok') {
         await setMember()
-        useResultSwal({ title: "update success" })
+        useResultSwal({ title: 'update success' })
         isOpen.value = false
       } else {
-        useResultSwal({ title: "update failed", icon: "error" })
+        useResultSwal({ title: 'update failed', icon: 'error' })
       }
     } catch (err) {
-      useResultSwal({ title: "update failed", icon: "error" })
+      useResultSwal({ title: 'update failed', icon: 'error' })
     } finally {
       changeLoadingState(0)
     }
@@ -74,29 +70,25 @@ export const useMemberActions = () => {
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult(
-        "/members",
-        "deletePiPiMembers",
-        { id }
-      )
-      if (data.status === "ok") {
+      const data = await useGetApiResult('/members', 'deletePiPiMembers', { id })
+      if (data.status === 'ok') {
         await setMember()
-        useResultSwal({ title: "delete success" })
+        useResultSwal({ title: 'delete success' })
       } else {
-        useResultSwal({ title: "delete failed", icon: "error" })
+        useResultSwal({ title: 'delete failed', icon: 'error' })
       }
     } catch (error) {
-      useResultSwal({ title: "delete failed", icon: "error" })
+      useResultSwal({ title: 'delete failed', icon: 'error' })
     } finally {
       changeLoadingState(0)
     }
   }
 
   const currentEditMember = reactive({
-    id:"",
-    name: "",
+    id: '',
+    name: '',
     age: 0,
-    gender: 0
+    gender: 0,
   })
   // editMember
   const editMember = (member) => {
@@ -116,6 +108,6 @@ export const useMemberActions = () => {
     addMember,
     editMember,
     updateMember,
-    deleteMember
+    deleteMember,
   }
 }

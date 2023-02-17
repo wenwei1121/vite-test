@@ -1,6 +1,6 @@
 <script setup>
 // directives
-import { vNumOnly } from "@/directives/useDealInput"
+import { vNumOnly } from '@/directives/useDealInput'
 
 const { loadingState } = storeToRefs(useLoadingState())
 const { setMember } = useStore()
@@ -33,10 +33,7 @@ const {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="member of filterFamilyMember"
-            :key="member.id"
-          >
+          <tr v-for="member of filterFamilyMember" :key="member.id">
             <th>
               <div class="is-size-5">
                 {{ member.name }}
@@ -54,10 +51,7 @@ const {
             </td>
             <td>
               <div class="buttons">
-                <button
-                  class="button is-info is-outlined is-clickable"
-                  @click="editMember(member)"
-                >
+                <button class="button is-info is-outlined is-clickable" @click="editMember(member)">
                   Edit
                 </button>
                 <button
@@ -98,10 +92,7 @@ const {
           </label>
           <label class="flex flex-col gap-y-1">
             <span>Gender :</span>
-            <GenderInput
-              v-model:genderValue="currentEditMember.gender"
-              :radio-items="genderInfo"
-            />
+            <GenderInput v-model:genderValue="currentEditMember.gender" :radio-items="genderInfo" />
           </label>
         </template>
       </CommonModal>

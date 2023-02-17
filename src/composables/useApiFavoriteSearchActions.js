@@ -9,27 +9,22 @@ export const useFavoriteSearchActions = () => {
 
   const favorites = ref([])
   const getFavorites = async () => {
-    const result = await useGetApiResult("favorites", "readFavorites")
+    const result = await useGetApiResult('favorites', 'readFavorites')
     favorites.value = [...result]
   }
   getFavorites()
 
   const { changeLoadingState } = useLoadingState()
   const isOpen = ref(false)
-  const favoriteName = ref("")
+  const favoriteName = ref('')
   const addFavorite = async () => {
     const errMsg = useCheckInputAction(favorites, { name: favoriteName.value })
     if (errMsg) {
-      useResultSwal({ title: errMsg, icon: "error" })
+      useResultSwal({ title: errMsg, icon: 'error' })
       return
     }
 
-    const {
-      inputName: name,
-      inputAge: age,
-      selectComparisonOperator: operator,
-      selectGender: gender,
-    } = searchInfo
+    const { inputName: name, inputAge: age, selectComparisonOperator: operator, selectGender: gender } = searchInfo
 
     const parameter = {
       name: favoriteName.value,
@@ -38,17 +33,17 @@ export const useFavoriteSearchActions = () => {
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult("favorites", "addFavorite", parameter)
-      if (data.status === "ok") {
+      const data = await useGetApiResult('favorites', 'addFavorite', parameter)
+      if (data.status === 'ok') {
         getFavorites()
-        useResultSwal({ title: "add favorite success" })
-        favoriteName.value = ""
+        useResultSwal({ title: 'add favorite success' })
+        favoriteName.value = ''
         isOpen.value = false
       } else {
-        useResultSwal({ title: "add favorite failed", icon: "error" })
+        useResultSwal({ title: 'add favorite failed', icon: 'error' })
       }
     } catch (error) {
-      useResultSwal({ title: "add favorite failed", icon: "error" })
+      useResultSwal({ title: 'add favorite failed', icon: 'error' })
     } finally {
       changeLoadingState(0)
     }
@@ -62,15 +57,15 @@ export const useFavoriteSearchActions = () => {
 
     try {
       changeLoadingState(1)
-      const data = await useGetApiResult("favorites", "deleteFavorite", { id })
-      if (data.status === "ok") {
+      const data = await useGetApiResult('favorites', 'deleteFavorite', { id })
+      if (data.status === 'ok') {
         getFavorites()
-        useResultSwal({ title: "delete favorite success" })
+        useResultSwal({ title: 'delete favorite success' })
       } else {
-        useResultSwal({ title: "delete favorite failed", icon: "error" })
+        useResultSwal({ title: 'delete favorite failed', icon: 'error' })
       }
     } catch (err) {
-      useResultSwal({ title: "delete favorite failed", icon: "error" })
+      useResultSwal({ title: 'delete favorite failed', icon: 'error' })
     } finally {
       changeLoadingState(0)
     }

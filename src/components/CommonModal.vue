@@ -7,22 +7,16 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "title"
+    default: 'title'
   }
 })
-const emits = defineEmits(["update:isOpen", "save"])
-const useIsOpen = useVModel(props, "isOpen", emits)
+const emits = defineEmits(['update:isOpen', 'save'])
+const useIsOpen = useVModel(props, 'isOpen', emits)
 </script>
 
 <template>
-  <TransitionRoot
-    appear
-    :show="useIsOpen"
-  >
-    <Dialog
-      class="relative z-50"
-      @close="useIsOpen = false"
-    >
+  <TransitionRoot appear :show="useIsOpen">
+    <Dialog class="relative z-50" @close="useIsOpen = false">
       <TransitionChild
         enter="duration-300 ease-out"
         enter-from="opacity-0"
@@ -32,10 +26,7 @@ const useIsOpen = useVModel(props, "isOpen", emits)
         leave-to="opacity-0"
       >
         <!-- The backdrop, rendered as a fixed sibling to the panel container -->
-        <div
-          class="fixed inset-0 bg-black/30"
-          aria-hidden="true"
-        ></div>
+        <div class="fixed inset-0 bg-black/30" aria-hidden="true"></div>
       </TransitionChild>
 
       <!-- Full-screen container to center the panel -->
@@ -49,9 +40,7 @@ const useIsOpen = useVModel(props, "isOpen", emits)
           leave-from="opacity-100 scale-100"
           leave-to="opacity-0 scale-95"
         >
-          <DialogPanel
-            class="w-full max-w-sm rounded bg-gray-800 text-gray-100 p-5 lg:p-7"
-          >
+          <DialogPanel class="w-full max-w-sm rounded bg-gray-800 text-gray-100 p-5 lg:p-7">
             <DialogTitle class="text-2xl lg:text-3xl text-center">
               {{ title }}
             </DialogTitle>
@@ -68,10 +57,7 @@ const useIsOpen = useVModel(props, "isOpen", emits)
               >
                 Save
               </button>
-              <button
-                class="inline-flex text-white py-1"
-                @click="useIsOpen = false"
-              >
+              <button class="inline-flex text-white py-1" @click="useIsOpen = false">
                 Cancel
               </button>
             </div>

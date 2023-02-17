@@ -1,6 +1,6 @@
 <script setup>
 // heroIcon
-import { CheckIcon } from "@heroicons/vue/20/solid"
+import { CheckIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
   genderValue: {
@@ -12,9 +12,9 @@ const props = defineProps({
     default: () => []
   }
 })
-const emits = defineEmits(["update:genderValue"])
+const emits = defineEmits(['update:genderValue'])
 // VueUse: useVModel => (Shorthand for v-model binding, props + emit -> ref)
-const useVModelGenderValue = useVModel(props, "genderValue", emits)
+const useVModelGenderValue = useVModel(props, 'genderValue', emits)
 </script>
 
 <template>
@@ -34,9 +34,7 @@ const useVModelGenderValue = useVModel(props, "genderValue", emits)
           >
             <div
               :class="[
-                active
-                  ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300'
-                  : '',
+                active ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300' : '',
                 checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-gray-400 ',
               ]"
               class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none"
@@ -53,10 +51,7 @@ const useVModelGenderValue = useVModel(props, "genderValue", emits)
                     </RadioGroupLabel>
                   </div>
                 </div>
-                <CheckIcon
-                  v-show="checked" 
-                  class="w-5 h-5"
-                />
+                <CheckIcon v-show="checked" class="w-5 h-5" />
               </div>
             </div>
           </RadioGroupOption>

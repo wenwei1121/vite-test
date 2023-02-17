@@ -1,16 +1,16 @@
 <script setup>
-  // heroIcons
-  import { HeartIcon, PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/solid"
-  import { useFavoriteSearchActions } from "@/composables/useApiFavoriteSearchActions"
+// heroIcons
+import { HeartIcon, PlusCircleIcon, TrashIcon } from '@heroicons/vue/24/solid'
+import { useFavoriteSearchActions } from '@/composables/useApiFavoriteSearchActions'
 
-  const {
-    favorites,
-    isOpen,
-    favoriteName,
-    applyConditions,
-    addFavorite,
-    deleteFavorite,
-  } = useFavoriteSearchActions()
+const {
+  favorites,
+  isOpen,
+  favoriteName,
+  applyConditions,
+  addFavorite,
+  deleteFavorite,
+} = useFavoriteSearchActions()
 </script>
 
 <template>
@@ -26,10 +26,7 @@
           :key="item.id"
           class="flex justify-between cursor-pointer"
         >
-          <span
-            class="w-full"
-            @click="applyConditions(item.conditions)"
-          >
+          <span class="w-full" @click="applyConditions(item.conditions)">
             {{ item.name }}
           </span>
           <button @click="deleteFavorite(item)">
@@ -39,10 +36,7 @@
       </ul>
       <hr class="h-1 rounded-sm bg-gray-100 my-3" />
       <div class="flex flex-col gap-y-1">
-        <button
-          class="flex gap-x-1"
-          @click="isOpen = true"
-        >
+        <button class="flex gap-x-1" @click="isOpen = true">
           <PlusCircleIcon class="w-4 h-4 self-center" />
           <span>add favorite</span>
         </button>
@@ -57,10 +51,7 @@
     <template #modalBody>
       <label class="flex flex-col gap-y-1">
         <span>Favorite Name :</span>
-        <input
-          v-model.trim="favoriteName"
-          class="text-gray-800 rounded-sm outline-none px-2 py-1"
-        />
+        <input v-model.trim="favoriteName" class="text-gray-800 rounded-sm outline-none px-2 py-1" />
       </label>
     </template>
   </CommonModal>

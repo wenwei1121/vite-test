@@ -1,9 +1,9 @@
 <script setup>
 // directives
-import { vNumOnly } from "@/directives/useDealInput"
+import { vNumOnly } from '@/directives/useDealInput'
 
 const { setCurrentPath } = useCurrentPath()
-setCurrentPath("/TestRedEnvelope")
+setCurrentPath('/TestRedEnvelope')
 
 const {
   prizes,
@@ -23,10 +23,7 @@ const {
 </script>
 
 <template>
-  <div
-    v-show="!sixHundredStep"
-    class="flex justify-evenly gap-3"
-  >
+  <div v-show="!sixHundredStep" class="flex justify-evenly gap-3">
     <!-- 成員與剩餘獎項 -->
     <div class="w-full max-w-xl bg-gray-800 rounded-lg border border-gray-700 shadow-md">
       <div class="flex justify-evenly py-8">
@@ -36,10 +33,7 @@ const {
             <table class="text-md text-left">
               <thead class="uppercase bg-gray-700">
                 <tr>
-                  <th
-                    scope="col"
-                    class="py-3 px-6 text-gray-400 font-semibold" 
-                  >
+                  <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                     名字
                   </th>
                 </tr>
@@ -50,10 +44,7 @@ const {
                   :key="name"
                   class="border-b bg-gray-600 border-gray-700"
                 >
-                  <th
-                    scope="row"
-                    class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
-                  >
+                  <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
                     {{ name }}
                   </th>
                 </tr>
@@ -67,16 +58,10 @@ const {
             <table class="text-md text-left">
               <thead class="uppercase bg-gray-700">
                 <tr>
-                  <th
-                    scope="col"
-                    class="py-3 px-6 text-gray-400 font-semibold"
-                  >
+                  <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                     級別
                   </th>
-                  <th
-                    scope="col"
-                    class="py-3 px-6 text-gray-400 font-semibold"
-                  >
+                  <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                     獎金
                   </th>
                 </tr>
@@ -87,10 +72,7 @@ const {
                   :key="item.id"
                   class="border-b bg-gray-600 border-gray-700"
                 >
-                  <th
-                    scope="row"
-                    class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
-                  >
+                  <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
                     {{ item.label }}賞
                   </th>
                   <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
@@ -107,11 +89,7 @@ const {
     <div class="w-full max-w-sm rounded-lg border shadow-md bg-gray-800 border-gray-700">
       <div class="flex flex-col items-center p-8">
         <span class="text-lg text-gray-200 font-extrabold">目前抽獎人</span>
-        <img
-          class="mt-5 mb-3 w-24 h-24 rounded-full shadow-lg bg-white"
-          src="@/assets/logo.png"
-          alt=""
-        />
+        <img class="mt-5 mb-3 w-24 h-24 rounded-full shadow-lg bg-white" src="@/assets/logo.png" />
         <h5 class="text-3xl font-semibold text-gray-100">
           {{ currentDrawer !== "" ? currentDrawer : "XXX" }}
         </h5>
@@ -152,22 +130,13 @@ const {
           <table class="text-md text-left">
             <thead class="uppercase bg-gray-700">
               <tr>
-                <th
-                  scope="col"
-                  class="py-3 px-6 text-gray-400 font-semibold"
-                >
+                <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                   順序
                 </th>
-                <th
-                  scope="col"
-                  class="py-3 px-6 text-gray-400 font-semibold"
-                >
+                <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                   成員
                 </th>
-                <th
-                  scope="col"
-                  class="py-3 px-6 text-gray-400 font-semibold"
-                >
+                <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                   抽中獎項
                 </th>
               </tr>
@@ -178,10 +147,7 @@ const {
                 :key="keyName"
                 class="border-b bg-gray-600 border-gray-700"
               >
-                <th
-                  scope="row"
-                  class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
-                >
+                <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
                   {{ index + 1 }}
                 </th>
                 <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
@@ -200,7 +166,7 @@ const {
             class="
               cursor-pointer inline-flex items-center font-medium rounded-lg text-sm py-2 px-4 text-center mr-2 mb-2
               text-white bg-blue-500 hover:bg-blue-300 focus:ring-4 focus:outline-none
-            "     
+              "
             @click="randomSortFamilyMember"
           >
             隨機排序
@@ -209,10 +175,7 @@ const {
       </div>
     </div>
   </div>
-  <div
-    v-show="sixHundredStep"
-    class="flex justify-evenly gap-3"
-  >
+  <div v-show="sixHundredStep" class="flex justify-evenly gap-3">
     <!-- 600元昇格戰成員 -->
     <div class="w-full max-w-xl bg-gray-800 rounded-lg border border-gray-700 shadow-md">
       <div class="flex justify-evenly py-8">
@@ -222,16 +185,10 @@ const {
             <table class="text-md text-left">
               <thead class="uppercase bg-gray-700">
                 <tr>
-                  <th
-                    scope="col"
-                    class="py-3 px-6 text-gray-400 font-semibold" 
-                  >
+                  <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                     名字
                   </th>
-                  <th
-                    scope="col"
-                    class="py-3 px-6 text-gray-400 font-semibold"
-                  >
+                  <th scope="col" class="py-3 px-6 text-gray-400 font-semibold">
                     猜的數字
                   </th>
                 </tr>
@@ -242,10 +199,7 @@ const {
                   :key="member.name"
                   class="border-b bg-gray-600 border-gray-700"
                 >
-                  <th
-                    scope="row"
-                    class="py-4 px-6 font-medium whitespace-nowrap text-gray-100"
-                  >
+                  <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">
                     {{ member.name }}
                   </th>
                   <td class="py-4 px-6 font-medium whitespace-nowrap text-gray-100">

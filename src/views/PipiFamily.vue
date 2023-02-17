@@ -1,6 +1,6 @@
 <script setup>
 const { setCurrentPath } = useCurrentPath()
-setCurrentPath("/")
+setCurrentPath('/')
 </script>
 
 <template>

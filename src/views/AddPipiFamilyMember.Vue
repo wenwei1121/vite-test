@@ -1,9 +1,9 @@
 <script setup>
 // directives
-import { vFocus, vNumOnly } from "@/directives/useDealInput"
+import { vFocus, vNumOnly } from '@/directives/useDealInput'
 
 const { setCurrentPath } = useCurrentPath()
-setCurrentPath("/AddPipiFamilyMember")
+setCurrentPath('AddPipiFamilyMember')
 
 const { loadingState } = storeToRefs(useLoadingState())
 const { genderInfo, addMemberInfo, addMember } = useMemberActions()
@@ -36,11 +36,13 @@ const { genderInfo, addMemberInfo, addMember } = useMemberActions()
           />
         </div>
       </div>
+
       <GenderInput
         v-model:genderValue="addMemberInfo.gender"
         :radio-items="genderInfo"
         class="mb-2"
       />
+
       <div class="field mx-auto mb-2 w-full max-w-md is-grouped">
         <div class="control">
           <button
